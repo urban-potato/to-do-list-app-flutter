@@ -1,3 +1,7 @@
 {
-  "@@locale": "ru"
+  "@@locale": "ru",
+  "newToDo": "Новая задача",
+  "today": "Сегодня",
+  "other": "Остальное",
+  "archive": "Архив"
 }

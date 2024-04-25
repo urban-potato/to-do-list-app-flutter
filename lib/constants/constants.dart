@@ -17,7 +17,7 @@ abstract class AppColors {
 
 abstract class AppMeasures {
   static double padding(BuildContext context) {
-    return MediaQuery.of(context).size.width * 0.075;
+    return MediaQuery.of(context).size.width * 0.035;
   }
 }
 

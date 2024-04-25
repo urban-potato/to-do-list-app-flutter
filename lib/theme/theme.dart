@@ -30,12 +30,13 @@ final darkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     backgroundColor: AppColors.fourthDark,
     elevation: 0,
-    // labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
-    //   (Set<MaterialState> state) => state.contains(MaterialState.selected)
-    //       ? TextStyle(color: AppColors.mainGreen)
-    //       : TextStyle(color: AppColors.fourthDark),
-    // ),
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+    labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+      (Set<MaterialState> state) => state.contains(MaterialState.selected)
+          ? TextStyle(color: AppColors.mainGreen, fontSize: 14)
+          : TextStyle(color: AppColors.secondaryTextDark, fontSize: 14),
+    ),
+    // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
   textTheme: GoogleFonts.interTextTheme(
     TextTheme(
