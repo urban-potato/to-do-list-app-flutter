@@ -5,6 +5,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/router/router.dart';
 import 'package:to_do_list_app/theme/theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ToDoListApp extends StatefulWidget {
   const ToDoListApp({super.key});
@@ -47,6 +48,8 @@ class _ToDoListAppState extends State<ToDoListApp> {
     return MaterialApp.router(
       title: 'To-do list app',
       theme: darkTheme,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       locale: Locale(_locale),
       routerConfig: _appRouter.config(
         navigatorObservers: () => [TalkerRouteObserver(GetIt.I<Talker>())],

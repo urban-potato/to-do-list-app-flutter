@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/to_dos_screen/widgets/language.dart';
 import 'package:to_do_list_app/to_do_list_app.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class ToDosScreen extends StatelessWidget {
@@ -22,6 +23,9 @@ class ToDosScreen extends StatelessWidget {
         //   systemNavigationBarColor: AppColors.fourthDark, // Navigation bar
         //   statusBarColor: AppColors.fourthDark, // Status bar
         // ),
+      ),
+      body: Container(
+        child: Text(''),
       ),
     );
   }
