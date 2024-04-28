@@ -1,5 +1,5 @@
 name: to_do_list_app
-description: "A new Flutter project."
+description: "Your best to-do list"
 publish_to: "none"
 version: 1.0.0+1
 
@@ -17,7 +17,10 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_localizations:
     sdk: flutter
-  intl: any
+  intl: ^0.18.1
+  flutter_slidable: ^3.1.0
+  hive_flutter: ^1.1.0
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -25,6 +28,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   auto_route_generator: ^8.0.0
   build_runner: ^2.4.9
+  hive_generator: ^2.0.1
 
 flutter:
   uses-material-design: true

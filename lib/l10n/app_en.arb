@@ -3,5 +3,8 @@
   "newToDo": "New To-do",
   "today": "Today",
   "other": "Other",
-  "archive": "Archive"
+  "archive": "Archive",
+  "save": "Save",
+  "toDo": "to do...",
+  "toDoDetails": "details..."
 }

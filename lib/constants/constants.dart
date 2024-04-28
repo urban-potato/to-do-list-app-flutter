@@ -29,3 +29,9 @@ abstract class LocalesKeys {
 abstract class SharedPreferencesKeys {
   static const locale = 'locale';
 }
+
+abstract class HiveKeys {
+  static const todayToDosBox = 'today_todos_box';
+  static const otherToDosBox = 'other_todos_box';
+  static const archiveToDosBox = 'archive_todos_box';
+}

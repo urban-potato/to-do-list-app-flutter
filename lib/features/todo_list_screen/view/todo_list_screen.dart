@@ -3,41 +3,104 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/features/home_screen/models/language.dart';
-import 'package:to_do_list_app/features/home_screen/widgets/archive_to_dos_widget.dart';
-import 'package:to_do_list_app/features/home_screen/widgets/other_to_dos_widget.dart';
-import 'package:to_do_list_app/features/home_screen/widgets/today_to_dos_widget.dart';
+import 'package:to_do_list_app/features/todo_list_screen/models/language.dart';
+import 'package:to_do_list_app/features/todo_list_screen/widgets/archive_todos_widget.dart';
+import 'package:to_do_list_app/features/todo_list_screen/widgets/other_todos_widget.dart';
+import 'package:to_do_list_app/features/todo_list_screen/widgets/today_todos_widget.dart';
+import 'package:to_do_list_app/router/router.dart';
 import 'package:to_do_list_app/to_do_list_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ToDoListScreen extends StatefulWidget {
+  const ToDoListScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ToDoListScreen> createState() => _ToDoListScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int currentPageIndex = 0;
+class _ToDoListScreenState extends State<ToDoListScreen> {
+  int _currentPageIndex = 0;
+
+  late List<Widget> _widgets;
+
+  late List<String> _titles;
+  late List<Widget> _navigationItems;
 
   @override
-  Widget build(BuildContext context) {
-    List<Widget> widgets = [
-      TodayToDosWidget(),
-      OtherToDosWidget(),
-      ArchiveToDosWidget(),
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _widgets = [
+      const TodayToDosWidget(),
+      const OtherToDosWidget(),
+      const ArchiveToDosWidget(),
     ];
 
-    List<String> titles = [
+    _titles = [
       AppLocalizations.of(context)!.today,
       AppLocalizations.of(context)!.other,
       AppLocalizations.of(context)!.archive,
     ];
 
+    _navigationItems = [
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.today,
+          color: AppColors.mainDark,
+          size: 26,
+        ),
+        icon: Icon(
+          Icons.today_outlined,
+          color: AppColors.secondaryTextDark,
+          size: 26,
+        ),
+        label: AppLocalizations.of(context)!.today,
+      ),
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.list_alt,
+          color: AppColors.mainDark,
+          size: 26,
+        ),
+        icon: Icon(
+          Icons.list_alt_outlined,
+          color: AppColors.secondaryTextDark,
+          size: 26,
+        ),
+        label: AppLocalizations.of(context)!.other,
+      ),
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.task_alt,
+          color: AppColors.mainDark,
+          size: 26,
+        ),
+        icon: Icon(
+          Icons.task_alt_outlined,
+          color: AppColors.secondaryTextDark,
+          size: 26,
+        ),
+        label: AppLocalizations.of(context)!.archive,
+      ),
+    ];
+  }
+
+  void _handleNavigationItemTap(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+  }
+
+  void _handleFloatingButtonTap(BuildContext context) {
+    AutoRouter.of(context).push(const CreateToDoRoute());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(titles[currentPageIndex]),
+        title: Text(_titles[_currentPageIndex]),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
         actions: const <Widget>[_ChangeLocaleDropdownButtonWidget()],
@@ -46,81 +109,37 @@ class _HomeScreenState extends State<HomeScreen> {
         //   statusBarColor: AppColors.fourthDark, // Status bar
         // ),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppMeasures.padding(context),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppMeasures.padding(context),
+          ),
+          child: _widgets[_currentPageIndex],
         ),
-        child: widgets[currentPageIndex],
       ),
       bottomNavigationBar: NavigationBar(
         // height: 60,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
-        selectedIndex: currentPageIndex,
+        onDestinationSelected: _handleNavigationItemTap,
+        selectedIndex: _currentPageIndex,
         indicatorColor: AppColors.mainGreen,
         // indicatorShape:
         //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        destinations: <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.task_alt,
-              color: AppColors.mainDark,
-              size: 26,
-            ),
-            icon: Icon(
-              Icons.task_alt_outlined,
-              color: AppColors.secondaryTextDark,
-              size: 26,
-            ),
-            label: AppLocalizations.of(context)!.today,
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.list,
-              color: AppColors.mainDark,
-              size: 26,
-            ),
-            icon: Icon(
-              Icons.list_outlined,
-              color: AppColors.secondaryTextDark,
-              size: 26,
-            ),
-            label: AppLocalizations.of(context)!.other,
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.archive,
-              color: AppColors.mainDark,
-              size: 26,
-            ),
-            icon: Icon(
-              Icons.archive_outlined,
-              color: AppColors.secondaryTextDark,
-              size: 26,
-            ),
-            label: AppLocalizations.of(context)!.archive,
-          ),
-        ],
+        destinations: _navigationItems,
       ),
       floatingActionButton: FloatingActionButton(
+        onPressed: () => _handleFloatingButtonTap(context),
         tooltip: AppLocalizations.of(context)!.newToDo,
         child: const Icon(
           Icons.add_rounded,
           size: 30,
         ),
-        onPressed: () {},
       ),
     );
   }
 }
 
 class _ChangeLocaleDropdownButtonWidget extends StatelessWidget {
-  const _ChangeLocaleDropdownButtonWidget({
-    super.key,
-  });
+  const _ChangeLocaleDropdownButtonWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +186,6 @@ class _ChangeLocaleDropdownButtonWidget extends StatelessWidget {
 
 class _ChangeLocaleDropdownMenuItemWidget extends StatelessWidget {
   const _ChangeLocaleDropdownMenuItemWidget({
-    super.key,
     required this.language,
   });
 
