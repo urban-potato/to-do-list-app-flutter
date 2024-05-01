@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_list_app/entity/todo.dart';
 import 'package:to_do_list_app/features/create_todo_screen/index.dart';
 import 'package:to_do_list_app/features/todo_list_screen/index.dart';
 import 'package:to_do_list_app/features/todo_screen/view/index.dart';

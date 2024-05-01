@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/entity/todo.dart';
 import 'package:to_do_list_app/features/todo_screen/models/todo_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,7 +34,7 @@ class _ToDoScreenState extends State<ToDoScreen> {
 }
 
 class _ToDoScreenBody extends StatelessWidget {
-  const _ToDoScreenBody({super.key});
+  const _ToDoScreenBody();
 
   @override
   Widget build(BuildContext context) {
@@ -54,30 +53,161 @@ class _ToDoScreenBody extends StatelessWidget {
             horizontal: AppMeasures.padding(context),
           ),
           child: Center(
-            child: toDo != null
-                ? _ToDoInfoWidget(toDo: toDo)
-                : const CircularProgressIndicator(),
-          ),
+              child: toDo != null
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _ToDoNameWidget(toDoName: toDo.name),
+                          const SizedBox(height: 10),
+                          _ToDoDetailsWidget(toDoDetails: toDo.details),
+                          const SizedBox(height: 26),
+                          const _SaveButtonWidget(),
+                        ],
+                      ),
+                    )
+                  : const CircularProgressIndicator()),
         ),
       ),
     );
   }
 }
 
-class _ToDoInfoWidget extends StatelessWidget {
-  const _ToDoInfoWidget({required this.toDo});
+class _ToDoNameWidget extends StatefulWidget {
+  const _ToDoNameWidget({required this.toDoName});
 
-  final ToDo toDo;
+  final String toDoName;
+
+  @override
+  State<_ToDoNameWidget> createState() => _ToDoNameWidgetState();
+}
+
+class _ToDoNameWidgetState extends State<_ToDoNameWidget> {
+  late TextEditingController? toDoNameController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    toDoNameController = TextEditingController(
+      text: widget.toDoName,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Text(toDo.name),
-          Text(toDo.details),
-        ],
+    return TextField(
+      controller: toDoNameController,
+      decoration: _TextFieldDecoration.decoration.copyWith(
+        hintText: AppLocalizations.of(context)!.toDoTitlePlaceholder,
+        hintStyle: Theme.of(context).textTheme.titleSmall,
       ),
+      style: Theme.of(context).textTheme.bodyMedium,
+      textCapitalization: TextCapitalization.sentences,
+      keyboardAppearance: Brightness.dark,
+      minLines: null,
+      maxLines: null,
+      maxLength: 256,
+      // textAlign: TextAlign.justify,
+      textInputAction: TextInputAction.next,
+      onTapOutside: (PointerDownEvent event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      onChanged: (String value) =>
+          ToDoModelProvider.read(context)?.model.toDoName = value,
     );
   }
+}
+
+class _ToDoDetailsWidget extends StatefulWidget {
+  const _ToDoDetailsWidget({
+    required this.toDoDetails,
+  });
+
+  final String toDoDetails;
+
+  @override
+  State<_ToDoDetailsWidget> createState() => _ToDoDetailsWidgetState();
+}
+
+class _ToDoDetailsWidgetState extends State<_ToDoDetailsWidget> {
+  late TextEditingController? toDoDetailsController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    toDoDetailsController = TextEditingController(
+      text: widget.toDoDetails,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: toDoDetailsController,
+      decoration: _TextFieldDecoration.decoration.copyWith(
+        hintText: AppLocalizations.of(context)!.toDoDetailsPlaceholder,
+        hintStyle: Theme.of(context).textTheme.titleSmall,
+      ),
+      style: Theme.of(context).textTheme.bodyMedium,
+      textCapitalization: TextCapitalization.sentences,
+      keyboardAppearance: Brightness.dark,
+      minLines: null,
+      maxLines: null,
+      // textAlign: TextAlign.justify,
+      onTapOutside: (PointerDownEvent event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      onChanged: (String value) =>
+          ToDoModelProvider.read(context)?.model.toDoDetails = value,
+    );
+  }
+}
+
+class _SaveButtonWidget extends StatelessWidget {
+  const _SaveButtonWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: ElevatedButton(
+            onPressed: () => ToDoModelProvider.read(context)?.model.saveToDO(),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(AppColors.mainGreen),
+              foregroundColor:
+                  MaterialStateProperty.all(AppColors.mainTextDark),
+              textStyle: MaterialStateProperty.all(
+                  Theme.of(context).textTheme.titleMedium),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              padding: MaterialStateProperty.all(
+                const EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
+            child: Text(AppLocalizations.of(context)!.save),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+abstract class _TextFieldDecoration {
+  const _TextFieldDecoration();
+
+  static final decoration = InputDecoration(
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: AppColors.thirdDark),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: AppColors.mainGreen),
+    ),
+    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+    isCollapsed: true,
+  );
 }

@@ -6,10 +6,11 @@ class ToDoModel extends ChangeNotifier {
   final int toDoIndex;
   final String boxName;
 
-  // late final Future<Box<ToDo>> _box;
-
   ToDo? _toDo;
   ToDo? get toDo => _toDo;
+
+  late String toDoName;
+  late String toDoDetails;
 
   ToDoModel({
     required this.toDoIndex,
@@ -18,20 +19,41 @@ class ToDoModel extends ChangeNotifier {
     _setup();
   }
 
+  void saveToDO() async {
+    if (toDoName.isEmpty) return;
+    if (toDoName == _toDo?.name && toDoDetails == _toDo?.details) return;
+
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(ToDoAdapter());
+    }
+
+    final box = await Hive.openBox<ToDo>(boxName);
+
+    _toDo?.name = toDoName;
+    _toDo?.details = toDoDetails;
+
+    if (_toDo != null) {
+      await box.putAt(toDoIndex, _toDo!);
+    }
+  }
+
   void _setup() async {
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(ToDoAdapter());
     }
 
-    // _box = Hive.openBox<ToDo>(boxName);
     final box = await Hive.openBox<ToDo>(boxName);
-    _getToDoFromHive(box);
 
+    _toDo = box.getAt(toDoIndex);
+
+    toDoName = _toDo?.name ?? '';
+    toDoDetails = _toDo?.details ?? '';
+
+    notifyListeners();
     box.listenable().addListener(() => _getToDoFromHive(box));
   }
 
   void _getToDoFromHive(Box<ToDo> box) {
-    // final box = await _box;
     _toDo = box.getAt(toDoIndex);
     notifyListeners();
   }
@@ -54,9 +76,4 @@ class ToDoModelProvider extends InheritedNotifier {
         ?.widget;
     return widget is ToDoModelProvider ? widget : null;
   }
-
-  // @override
-  // bool updateShouldNotify(ToDoModelProvider oldWidget) {
-  //   return true;
-  // }
 }

@@ -76,7 +76,7 @@ class _ToDoNameFieldWidget extends StatelessWidget {
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      onChanged: (value) =>
+      onChanged: (String value) =>
           CreateToDoModelProvider.read(context)?.model.toDoName = value,
       // onEditingComplete: () =>
       //     CreateToDoModelProvider.read(context)?.model.saveToDO(context),
@@ -102,7 +102,7 @@ class _ToDoDetailsFieldWidget extends StatelessWidget {
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      onChanged: (value) =>
+      onChanged: (String value) =>
           CreateToDoModelProvider.read(context)?.model.toDoDetails = value,
       // onEditingComplete: () =>
       //     CreateToDoModelProvider.read(context)?.model.saveToDO(context),
