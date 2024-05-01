@@ -53,6 +53,6 @@ class CreateToDoModelProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(CreateToDoModelProvider oldWidget) {
-    return true;
+    return false;
   }
 }

@@ -22,28 +22,26 @@ class ToDoListScreen extends StatefulWidget {
 class _ToDoListScreenState extends State<ToDoListScreen> {
   int _currentPageIndex = 0;
 
-  late List<Widget> _widgets;
+  final List<Widget> _widgets = [
+    const TodayToDosWidget(),
+    const OtherToDosWidget(),
+    const ArchiveToDosWidget(),
+  ];
 
-  late List<String> _titles;
-  late List<Widget> _navigationItems;
+  List<String>? _titles;
+  List<Widget>? _navigationItems;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _widgets = [
-      const TodayToDosWidget(),
-      const OtherToDosWidget(),
-      const ArchiveToDosWidget(),
-    ];
-
-    _titles = [
+    _titles ??= [
       AppLocalizations.of(context)!.today,
       AppLocalizations.of(context)!.other,
-      AppLocalizations.of(context)!.archive,
+      AppLocalizations.of(context)!.done,
     ];
 
-    _navigationItems = [
+    _navigationItems ??= [
       NavigationDestination(
         selectedIcon: Icon(
           Icons.today,
@@ -81,7 +79,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
           color: AppColors.secondaryTextDark,
           size: 26,
         ),
-        label: AppLocalizations.of(context)!.archive,
+        label: AppLocalizations.of(context)!.done,
       ),
     ];
   }
@@ -100,7 +98,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_titles[_currentPageIndex]),
+        title: Text(_titles![_currentPageIndex]),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
         actions: const <Widget>[_ChangeLocaleDropdownButtonWidget()],
@@ -124,7 +122,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         indicatorColor: AppColors.mainGreen,
         // indicatorShape:
         //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        destinations: _navigationItems,
+        destinations: _navigationItems!,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleFloatingButtonTap(context),

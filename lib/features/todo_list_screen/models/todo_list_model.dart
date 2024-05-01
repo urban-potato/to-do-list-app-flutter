@@ -18,8 +18,10 @@ class ToDoListModel extends ChangeNotifier {
     }
 
     final box = await Hive.openBox<ToDo>(boxName);
+    // final toDoKey = box.keyAt(toDoIndex);
 
     await box.deleteAt(toDoIndex);
+    // await box.delete(toDoKey);
   }
 
   void moveToDo(int toDoIndex) async {
@@ -36,9 +38,11 @@ class ToDoListModel extends ChangeNotifier {
     final date = DateTime(now.year, now.month, now.day);
 
     if (boxName != HiveKeys.archiveToDosBox) {
-      // toDo.done = false;
+      toDo.isDone = true;
       toBoxName = HiveKeys.archiveToDosBox;
     } else {
+      toDo.isDone = false;
+
       if (toDo.dateTime.compareTo(date) == 0) {
         toBoxName = HiveKeys.todayToDosBox;
       } else {

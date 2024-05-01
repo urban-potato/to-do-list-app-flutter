@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/todo_list_screen/models/todo_list_model.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/todo_tile.dart';
+import 'package:to_do_list_app/features/todo_list_screen/widgets/todo_tile_widget.dart';
 
 class ArchiveToDosWidget extends StatefulWidget {
   const ArchiveToDosWidget({super.key});

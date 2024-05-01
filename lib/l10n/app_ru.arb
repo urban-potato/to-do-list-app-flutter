@@ -3,8 +3,10 @@
   "newToDo": "Новая задача",
   "today": "Сегодня",
   "other": "Остальное",
-  "archive": "Архив",
+  "done": "Выполнено",
   "save": "Сохранить",
-  "toDo": "задача...",
-  "toDoDetails": "детали..."
+  "toDoTitlePlaceholder": "задача...",
+  "toDoDetailsPlaceholder": "детали...",
+  "toDo": "Задача",
+  "delete": "Удалить"
 }

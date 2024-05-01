@@ -64,12 +64,15 @@ class _ToDoNameFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
-      decoration: _getTextFieldDecoration(context)
-          .copyWith(hintText: AppLocalizations.of(context)!.toDo),
+      decoration: _getTextFieldDecoration(context).copyWith(
+          hintText: AppLocalizations.of(context)!.toDoTitlePlaceholder),
       style: Theme.of(context).textTheme.bodyMedium,
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       textInputAction: TextInputAction.next,
+      minLines: null,
+      maxLines: null,
+      maxLength: 256,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -88,8 +91,8 @@ class _ToDoDetailsFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
-      decoration: _getTextFieldDecoration(context)
-          .copyWith(hintText: AppLocalizations.of(context)!.toDoDetails),
+      decoration: _getTextFieldDecoration(context).copyWith(
+          hintText: AppLocalizations.of(context)!.toDoDetailsPlaceholder),
       style: Theme.of(context).textTheme.bodyMedium,
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,

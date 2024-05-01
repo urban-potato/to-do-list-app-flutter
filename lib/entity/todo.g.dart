@@ -20,7 +20,7 @@ class ToDoAdapter extends TypeAdapter<ToDo> {
       name: fields[0] as String,
       details: fields[1] as String,
       dateTime: fields[2] as DateTime,
-    );
+    )..isDone = fields[3] as bool;
   }
 
   @override
@@ -34,7 +34,7 @@ class ToDoAdapter extends TypeAdapter<ToDo> {
       ..writeByte(2)
       ..write(obj.dateTime)
       ..writeByte(3)
-      ..write(obj.done);
+      ..write(obj.isDone);
   }
 
   @override

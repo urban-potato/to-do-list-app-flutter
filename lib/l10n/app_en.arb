@@ -3,8 +3,10 @@
   "newToDo": "New To-do",
   "today": "Today",
   "other": "Other",
-  "archive": "Archive",
+  "done": "Done",
   "save": "Save",
-  "toDo": "to do...",
-  "toDoDetails": "details..."
+  "toDoTitlePlaceholder": "to do...",
+  "toDoDetailsPlaceholder": "details...",
+  "toDo": "To-do",
+  "delete": "Delete"
 }
