@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/entity/todo.dart';
 import 'package:to_do_list_app/features/todo_list_screen/models/language.dart';
 import 'package:to_do_list_app/features/todo_list_screen/widgets/done_todos_widget.dart';
 import 'package:to_do_list_app/features/todo_list_screen/widgets/other_todos_widget.dart';
