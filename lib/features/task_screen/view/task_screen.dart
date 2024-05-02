@@ -49,8 +49,8 @@ class _TaskScreenBody extends StatelessWidget {
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black, // Navigation bar
-          statusBarColor: AppColors.mainDark, // Status bar
+          systemNavigationBarColor: Colors.black,
+          statusBarColor: AppColors.mainDark,
         ),
       ),
       body: SafeArea(
@@ -107,14 +107,13 @@ class _TaskNameWidgetState extends State<_TaskNameWidget> {
         hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
       ),
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       minLines: null,
       maxLines: null,
       maxLength: 256,
-      // textAlign: TextAlign.justify,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.newline,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -155,12 +154,11 @@ class _TaskDetailsWidgetState extends State<_TaskDetailsWidget> {
         hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
       ),
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       minLines: null,
       maxLines: null,
-      // textAlign: TextAlign.justify,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -214,7 +212,7 @@ abstract class _TextFieldDecoration {
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(color: AppColors.mainGreen),
     ),
-    contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
+    contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
     isCollapsed: true,
   );
 }

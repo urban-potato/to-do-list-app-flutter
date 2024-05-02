@@ -74,7 +74,7 @@ class _TaskNameFieldWidget extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.newline,
       minLines: null,
       maxLines: null,
       maxLength: 256,
