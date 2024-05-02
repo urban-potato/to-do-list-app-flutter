@@ -19,8 +19,6 @@ void main() {
     final talker = TalkerFlutter.init();
 
     await Hive.initFlutter();
-    // Hive.registerAdapter(ToDoAdapter());
-    // final toDoBox = await Hive.openBox<ToDoModel>(toDoBoxName);
 
     GetIt.I.registerSingleton(talker);
     GetIt.I<Talker>().debug('Talker started...');

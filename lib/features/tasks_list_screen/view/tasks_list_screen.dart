@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/features/todo_list_screen/models/language.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/done_todos_widget.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/other_todos_widget.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/today_todos_widget.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/models/language.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/widgets/done_tasks_widget.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/widgets/other_tasks_widget.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/widgets/today_tasks_widget.dart';
 import 'package:to_do_list_app/router/router.dart';
 import 'package:to_do_list_app/to_do_list_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
-class ToDoListScreen extends StatefulWidget {
-  const ToDoListScreen({super.key});
+class TasksListScreen extends StatefulWidget {
+  const TasksListScreen({super.key});
 
   @override
-  State<ToDoListScreen> createState() => _ToDoListScreenState();
+  State<TasksListScreen> createState() => _TasksListScreenState();
 }
 
-class _ToDoListScreenState extends State<ToDoListScreen> {
+class _TasksListScreenState extends State<TasksListScreen> {
   int _currentPageIndex = 0;
 
   final List<Widget> _widgets = [
-    const TodayToDosWidget(),
-    const OtherToDosWidget(),
-    const DoneToDosWidget(),
+    const TodayTasksWidget(),
+    const OtherTasksWidget(),
+    const DoneTasksWidget(),
   ];
 
   List<String>? _titles;
@@ -91,7 +91,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   }
 
   void _handleFloatingButtonTap(BuildContext context) {
-    AutoRouter.of(context).push(const CreateToDoRoute());
+    AutoRouter.of(context).push(const CreateTaskRoute());
   }
 
   @override
@@ -119,7 +119,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleFloatingButtonTap(context),
-        tooltip: AppLocalizations.of(context)!.newToDo,
+        tooltip: AppLocalizations.of(context)!.newTask,
         child: const Icon(
           Icons.add_rounded,
           size: 30,

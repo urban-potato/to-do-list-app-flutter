@@ -1,10 +1,10 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-part 'todo.g.dart';
+part 'task.g.dart';
 
 @HiveType(typeId: 0)
-class ToDo {
-  ToDo({
+class Task {
+  Task({
     required this.name,
     required this.details,
     required this.dateTime,

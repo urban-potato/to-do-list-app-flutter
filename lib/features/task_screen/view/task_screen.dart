@@ -1,49 +1,50 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/features/todo_screen/models/todo_model.dart';
+import 'package:to_do_list_app/features/task_screen/models/task_screen_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
-class ToDoScreen extends StatefulWidget {
-  const ToDoScreen({super.key, required this.toDoIndex, required this.boxName});
+class TaskScreen extends StatefulWidget {
+  const TaskScreen({super.key, required this.taskIndex, required this.boxName});
 
-  final int toDoIndex;
+  final int taskIndex;
   final String boxName;
 
   @override
-  State<ToDoScreen> createState() => _ToDoScreenState();
+  State<TaskScreen> createState() => _TaskScreenState();
 }
 
-class _ToDoScreenState extends State<ToDoScreen> {
-  ToDoModel? _model;
+class _TaskScreenState extends State<TaskScreen> {
+  TaskScreenModel? _model;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _model ??= ToDoModel(toDoIndex: widget.toDoIndex, boxName: widget.boxName);
+    _model ??=
+        TaskScreenModel(taskIndex: widget.taskIndex, boxName: widget.boxName);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ToDoModelProvider(
+    return TaskScreenModelProvider(
       model: _model!,
-      child: const _ToDoScreenBody(),
+      child: const _TaskScreenBody(),
     );
   }
 }
 
-class _ToDoScreenBody extends StatelessWidget {
-  const _ToDoScreenBody();
+class _TaskScreenBody extends StatelessWidget {
+  const _TaskScreenBody();
 
   @override
   Widget build(BuildContext context) {
-    final model = ToDoModelProvider.watch(context)?.model;
-    final toDo = model?.toDo;
+    final model = TaskScreenModelProvider.watch(context)?.model;
+    final task = model?.task;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.toDo),
+        title: Text(AppLocalizations.of(context)!.task),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
       ),
@@ -53,13 +54,13 @@ class _ToDoScreenBody extends StatelessWidget {
             horizontal: AppMeasures.padding(context),
           ),
           child: Center(
-              child: toDo != null
+              child: task != null
                   ? SingleChildScrollView(
                       child: Column(
                         children: [
-                          _ToDoNameWidget(toDoName: toDo.name),
+                          _TaskNameWidget(taskName: task.name),
                           const SizedBox(height: 10),
-                          _ToDoDetailsWidget(toDoDetails: toDo.details),
+                          _TaskDetailsWidget(taskDetails: task.details),
                           const SizedBox(height: 26),
                           const _SaveButtonWidget(),
                         ],
@@ -72,33 +73,33 @@ class _ToDoScreenBody extends StatelessWidget {
   }
 }
 
-class _ToDoNameWidget extends StatefulWidget {
-  const _ToDoNameWidget({required this.toDoName});
+class _TaskNameWidget extends StatefulWidget {
+  const _TaskNameWidget({required this.taskName});
 
-  final String toDoName;
+  final String taskName;
 
   @override
-  State<_ToDoNameWidget> createState() => _ToDoNameWidgetState();
+  State<_TaskNameWidget> createState() => _TaskNameWidgetState();
 }
 
-class _ToDoNameWidgetState extends State<_ToDoNameWidget> {
-  late TextEditingController? toDoNameController;
+class _TaskNameWidgetState extends State<_TaskNameWidget> {
+  late TextEditingController? taskNameController;
 
   @override
   void initState() {
     super.initState();
 
-    toDoNameController = TextEditingController(
-      text: widget.toDoName,
+    taskNameController = TextEditingController(
+      text: widget.taskName,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: toDoNameController,
+      controller: taskNameController,
       decoration: _TextFieldDecoration.decoration.copyWith(
-        hintText: AppLocalizations.of(context)!.toDoTitlePlaceholder,
+        hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
       ),
       style: Theme.of(context).textTheme.bodyMedium,
@@ -113,40 +114,40 @@ class _ToDoNameWidgetState extends State<_ToDoNameWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       onChanged: (String value) =>
-          ToDoModelProvider.read(context)?.model.toDoName = value,
+          TaskScreenModelProvider.read(context)?.model.taskName = value,
     );
   }
 }
 
-class _ToDoDetailsWidget extends StatefulWidget {
-  const _ToDoDetailsWidget({
-    required this.toDoDetails,
+class _TaskDetailsWidget extends StatefulWidget {
+  const _TaskDetailsWidget({
+    required this.taskDetails,
   });
 
-  final String toDoDetails;
+  final String taskDetails;
 
   @override
-  State<_ToDoDetailsWidget> createState() => _ToDoDetailsWidgetState();
+  State<_TaskDetailsWidget> createState() => _TaskDetailsWidgetState();
 }
 
-class _ToDoDetailsWidgetState extends State<_ToDoDetailsWidget> {
-  late TextEditingController? toDoDetailsController;
+class _TaskDetailsWidgetState extends State<_TaskDetailsWidget> {
+  late TextEditingController? taskDetailsController;
 
   @override
   void initState() {
     super.initState();
 
-    toDoDetailsController = TextEditingController(
-      text: widget.toDoDetails,
+    taskDetailsController = TextEditingController(
+      text: widget.taskDetails,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: toDoDetailsController,
+      controller: taskDetailsController,
       decoration: _TextFieldDecoration.decoration.copyWith(
-        hintText: AppLocalizations.of(context)!.toDoDetailsPlaceholder,
+        hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
       ),
       style: Theme.of(context).textTheme.bodyMedium,
@@ -159,7 +160,7 @@ class _ToDoDetailsWidgetState extends State<_ToDoDetailsWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       onChanged: (String value) =>
-          ToDoModelProvider.read(context)?.model.toDoDetails = value,
+          TaskScreenModelProvider.read(context)?.model.taskDetails = value,
     );
   }
 }
@@ -173,7 +174,8 @@ class _SaveButtonWidget extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () => ToDoModelProvider.read(context)?.model.saveToDO(),
+            onPressed: () =>
+                TaskScreenModelProvider.read(context)?.model.saveTask(),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(AppColors.mainGreen),
               foregroundColor:

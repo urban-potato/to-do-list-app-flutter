@@ -15,98 +15,98 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    CreateToDoRoute.name: (routeData) {
+    CreateTaskRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CreateToDoScreen(),
+        child: const CreateTaskScreen(),
       );
     },
-    ToDoListRoute.name: (routeData) {
+    TaskRoute.name: (routeData) {
+      final args = routeData.argsAs<TaskRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ToDoListScreen(),
-      );
-    },
-    ToDoRoute.name: (routeData) {
-      final args = routeData.argsAs<ToDoRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ToDoScreen(
+        child: TaskScreen(
           key: args.key,
-          toDoIndex: args.toDoIndex,
+          taskIndex: args.taskIndex,
           boxName: args.boxName,
         ),
+      );
+    },
+    TasksListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TasksListScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [CreateToDoScreen]
-class CreateToDoRoute extends PageRouteInfo<void> {
-  const CreateToDoRoute({List<PageRouteInfo>? children})
+/// [CreateTaskScreen]
+class CreateTaskRoute extends PageRouteInfo<void> {
+  const CreateTaskRoute({List<PageRouteInfo>? children})
       : super(
-          CreateToDoRoute.name,
+          CreateTaskRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'CreateToDoRoute';
+  static const String name = 'CreateTaskRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [ToDoListScreen]
-class ToDoListRoute extends PageRouteInfo<void> {
-  const ToDoListRoute({List<PageRouteInfo>? children})
-      : super(
-          ToDoListRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ToDoListRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ToDoScreen]
-class ToDoRoute extends PageRouteInfo<ToDoRouteArgs> {
-  ToDoRoute({
+/// [TaskScreen]
+class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
+  TaskRoute({
     Key? key,
-    required int toDoIndex,
+    required int taskIndex,
     required String boxName,
     List<PageRouteInfo>? children,
   }) : super(
-          ToDoRoute.name,
-          args: ToDoRouteArgs(
+          TaskRoute.name,
+          args: TaskRouteArgs(
             key: key,
-            toDoIndex: toDoIndex,
+            taskIndex: taskIndex,
             boxName: boxName,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'ToDoRoute';
+  static const String name = 'TaskRoute';
 
-  static const PageInfo<ToDoRouteArgs> page = PageInfo<ToDoRouteArgs>(name);
+  static const PageInfo<TaskRouteArgs> page = PageInfo<TaskRouteArgs>(name);
 }
 
-class ToDoRouteArgs {
-  const ToDoRouteArgs({
+class TaskRouteArgs {
+  const TaskRouteArgs({
     this.key,
-    required this.toDoIndex,
+    required this.taskIndex,
     required this.boxName,
   });
 
   final Key? key;
 
-  final int toDoIndex;
+  final int taskIndex;
 
   final String boxName;
 
   @override
   String toString() {
-    return 'ToDoRouteArgs{key: $key, toDoIndex: $toDoIndex, boxName: $boxName}';
+    return 'TaskRouteArgs{key: $key, taskIndex: $taskIndex, boxName: $boxName}';
   }
+}
+
+/// generated route for
+/// [TasksListScreen]
+class TasksListRoute extends PageRouteInfo<void> {
+  const TasksListRoute({List<PageRouteInfo>? children})
+      : super(
+          TasksListRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TasksListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

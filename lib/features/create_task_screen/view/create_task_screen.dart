@@ -2,36 +2,36 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:to_do_list_app/features/create_todo_screen/models/create_todo_model.dart';
+import 'package:to_do_list_app/features/create_task_screen/models/create_task_screen_model.dart';
 
 @RoutePage()
-class CreateToDoScreen extends StatefulWidget {
-  const CreateToDoScreen({super.key});
+class CreateTaskScreen extends StatefulWidget {
+  const CreateTaskScreen({super.key});
 
   @override
-  State<CreateToDoScreen> createState() => _CreateToDoScreenState();
+  State<CreateTaskScreen> createState() => _CreateTaskScreenState();
 }
 
-class _CreateToDoScreenState extends State<CreateToDoScreen> {
-  final _model = CreateToDoModel();
+class _CreateTaskScreenState extends State<CreateTaskScreen> {
+  final _model = CreateTaskScreenModel();
 
   @override
   Widget build(BuildContext context) {
-    return CreateToDoModelProvider(
+    return CreateTaskScreenModelProvider(
       model: _model,
-      child: const _CreateToDoWidget(),
+      child: const _CreateTaskScreenBody(),
     );
   }
 }
 
-class _CreateToDoWidget extends StatelessWidget {
-  const _CreateToDoWidget();
+class _CreateTaskScreenBody extends StatelessWidget {
+  const _CreateTaskScreenBody();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.newToDo),
+        title: Text(AppLocalizations.of(context)!.newTask),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
       ),
@@ -43,9 +43,9 @@ class _CreateToDoWidget extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _ToDoNameFieldWidget(),
+                _TaskNameFieldWidget(),
                 SizedBox(height: 10),
-                _ToDoDetailsFieldWidget(),
+                _TaskDetailsFieldWidget(),
                 SizedBox(height: 20),
                 _SaveButtonWidget(),
               ],
@@ -57,15 +57,15 @@ class _CreateToDoWidget extends StatelessWidget {
   }
 }
 
-class _ToDoNameFieldWidget extends StatelessWidget {
-  const _ToDoNameFieldWidget();
+class _TaskNameFieldWidget extends StatelessWidget {
+  const _TaskNameFieldWidget();
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
       decoration: _getTextFieldDecoration(context).copyWith(
-          hintText: AppLocalizations.of(context)!.toDoTitlePlaceholder),
+          hintText: AppLocalizations.of(context)!.taskNamePlaceholder),
       style: Theme.of(context).textTheme.bodyMedium,
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
@@ -77,22 +77,20 @@ class _ToDoNameFieldWidget extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       onChanged: (String value) =>
-          CreateToDoModelProvider.read(context)?.model.toDoName = value,
-      // onEditingComplete: () =>
-      //     CreateToDoModelProvider.read(context)?.model.saveToDO(context),
+          CreateTaskScreenModelProvider.read(context)?.model.taskName = value,
     );
   }
 }
 
-class _ToDoDetailsFieldWidget extends StatelessWidget {
-  const _ToDoDetailsFieldWidget();
+class _TaskDetailsFieldWidget extends StatelessWidget {
+  const _TaskDetailsFieldWidget();
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
       decoration: _getTextFieldDecoration(context).copyWith(
-          hintText: AppLocalizations.of(context)!.toDoDetailsPlaceholder),
+          hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder),
       style: Theme.of(context).textTheme.bodyMedium,
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
@@ -102,10 +100,9 @@ class _ToDoDetailsFieldWidget extends StatelessWidget {
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      onChanged: (String value) =>
-          CreateToDoModelProvider.read(context)?.model.toDoDetails = value,
-      // onEditingComplete: () =>
-      //     CreateToDoModelProvider.read(context)?.model.saveToDO(context),
+      onChanged: (String value) => CreateTaskScreenModelProvider.read(context)
+          ?.model
+          .taskDetails = value,
     );
   }
 }
@@ -119,8 +116,9 @@ class _SaveButtonWidget extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton(
-            onPressed: () =>
-                CreateToDoModelProvider.read(context)?.model.saveToDO(context),
+            onPressed: () => CreateTaskScreenModelProvider.read(context)
+                ?.model
+                .saveTask(context),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(AppColors.mainGreen),
               foregroundColor:

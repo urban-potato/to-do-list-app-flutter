@@ -1,64 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/features/todo_list_screen/models/todo_list_model.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/todo_tile_widget.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_screen_model.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/widgets/task_tile_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:to_do_list_app/resources/resources.dart';
 
-class OtherToDosWidget extends StatefulWidget {
-  const OtherToDosWidget({super.key});
+class OtherTasksWidget extends StatefulWidget {
+  const OtherTasksWidget({super.key});
 
   @override
-  State<OtherToDosWidget> createState() => _OtherToDosWidgetState();
+  State<OtherTasksWidget> createState() => _OtherTasksWidgetState();
 }
 
-class _OtherToDosWidgetState extends State<OtherToDosWidget> {
-  final _model = ToDoListModel(boxName: HiveKeys.otherToDosBox);
+class _OtherTasksWidgetState extends State<OtherTasksWidget> {
+  final _model = TasksListScreenModel(boxName: HiveKeys.otherTasksBox);
 
   @override
   Widget build(BuildContext context) {
-    return ToDoListModelProvider(
+    return TasksListScreenModelProvider(
       model: _model,
-      child: const _OtherToDosWidgetBody(),
+      child: const _OtherTasksWidgetBody(),
     );
   }
 }
 
-class _OtherToDosWidgetBody extends StatelessWidget {
-  const _OtherToDosWidgetBody();
+class _OtherTasksWidgetBody extends StatelessWidget {
+  const _OtherTasksWidgetBody();
 
   @override
   Widget build(BuildContext context) {
-    final toDoListLength =
-        ToDoListModelProvider.watch(context)?.model.toDoList?.length;
+    final tasksListLength =
+        TasksListScreenModelProvider.watch(context)?.model.tasksList?.length;
 
-    return toDoListLength == null
+    return tasksListLength == null
         ? const Center(child: CircularProgressIndicator())
-        : toDoListLength == 0
-            ? const _NoToDosWidget()
-            : _ToDosWidget(toDoListLength: toDoListLength);
+        : tasksListLength == 0
+            ? const _NoTasksWidget()
+            : _TasksWidget(tasksListLength: tasksListLength);
   }
 }
 
-class _ToDosWidget extends StatelessWidget {
-  const _ToDosWidget({
-    required this.toDoListLength,
+class _TasksWidget extends StatelessWidget {
+  const _TasksWidget({
+    required this.tasksListLength,
   });
 
-  final int toDoListLength;
+  final int tasksListLength;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: toDoListLength,
-      itemBuilder: (context, index) => ToDoTileWidget(toDoIndex: index),
+      itemCount: tasksListLength,
+      itemBuilder: (context, index) => TaskTileWidget(taskIndex: index),
     );
   }
 }
 
-class _NoToDosWidget extends StatelessWidget {
-  const _NoToDosWidget();
+class _NoTasksWidget extends StatelessWidget {
+  const _NoTasksWidget();
 
   @override
   Widget build(BuildContext context) {
