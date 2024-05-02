@@ -72,19 +72,15 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     String toBoxName;
     final now = DateTime.now();
-    final date = DateTime(now.year, now.month, now.day);
+    final todayDateTime = DateTime(now.year, now.month, now.day);
 
     if (boxName != HiveKeys.doneTasksBox) {
       task.isDone = true;
       toBoxName = HiveKeys.doneTasksBox;
     } else {
       task.isDone = false;
-
-      if (task.dateTime.compareTo(date) == 0) {
-        toBoxName = HiveKeys.todayTasksBox;
-      } else {
-        toBoxName = HiveKeys.otherTasksBox;
-      }
+      task.dateTime = todayDateTime;
+      toBoxName = HiveKeys.todayTasksBox;
     }
 
     final toBox = await Hive.openBox<Task>(toBoxName);
