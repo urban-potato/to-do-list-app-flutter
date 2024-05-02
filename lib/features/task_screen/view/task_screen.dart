@@ -43,35 +43,45 @@ class _TaskScreenBody extends StatelessWidget {
     final model = TaskScreenModelProvider.watch(context)?.model;
     final task = model?.task;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.task),
-        titleSpacing: AppMeasures.padding(context),
-        scrolledUnderElevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black,
-          statusBarColor: AppColors.mainDark,
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppMeasures.padding(context),
+    return PopScope(
+      onPopInvoked: (bool didPop) {
+        TaskScreenModelProvider.read(context)?.model.saveTask();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.task),
+          titleSpacing: AppMeasures.padding(context),
+          scrolledUnderElevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.black,
+            statusBarColor: AppColors.mainDark,
           ),
-          child: Center(
-              child: task != null
-                  ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          _TaskNameWidget(taskName: task.name),
-                          const SizedBox(height: 10),
-                          _TaskDetailsWidget(taskDetails: task.details),
-                          const SizedBox(height: 26),
-                          const _SaveButtonWidget(),
-                        ],
-                      ),
-                    )
-                  : const CircularProgressIndicator()),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: AppMeasures.padding(context),
+            ),
+            child: task != null
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        _TaskNameWidget(taskName: task.name),
+                        const SizedBox(height: 8),
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: AppColors.fourthDark,
+                        ),
+                        const SizedBox(height: 40),
+                        _TaskDetailsWidget(taskDetails: task.details),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  )
+                : const Center(child: CircularProgressIndicator()),
+          ),
         ),
       ),
     );
@@ -106,8 +116,12 @@ class _TaskNameWidgetState extends State<_TaskNameWidget> {
       decoration: _TextFieldDecoration.decoration.copyWith(
         hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
+        counterText: '',
       ),
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
+      style: Theme.of(context)
+          .textTheme
+          .bodyMedium
+          ?.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       minLines: null,
@@ -116,6 +130,7 @@ class _TaskNameWidgetState extends State<_TaskNameWidget> {
       textInputAction: TextInputAction.newline,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
+        TaskScreenModelProvider.read(context)?.model.saveTask();
       },
       onChanged: (String value) =>
           TaskScreenModelProvider.read(context)?.model.taskName = value,
@@ -161,6 +176,7 @@ class _TaskDetailsWidgetState extends State<_TaskDetailsWidget> {
       maxLines: null,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
+        TaskScreenModelProvider.read(context)?.model.saveTask();
       },
       onChanged: (String value) =>
           TaskScreenModelProvider.read(context)?.model.taskDetails = value,
@@ -168,51 +184,13 @@ class _TaskDetailsWidgetState extends State<_TaskDetailsWidget> {
   }
 }
 
-class _SaveButtonWidget extends StatelessWidget {
-  const _SaveButtonWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () =>
-                TaskScreenModelProvider.read(context)?.model.saveTask(),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(AppColors.mainGreen),
-              foregroundColor:
-                  MaterialStateProperty.all(AppColors.mainTextDark),
-              textStyle: MaterialStateProperty.all(
-                  Theme.of(context).textTheme.titleMedium),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(vertical: 10),
-              ),
-            ),
-            child: Text(AppLocalizations.of(context)!.save),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 abstract class _TextFieldDecoration {
   const _TextFieldDecoration();
 
-  static final decoration = InputDecoration(
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: AppColors.thirdDark),
-    ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(color: AppColors.mainGreen),
-    ),
-    contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+  static const decoration = InputDecoration(
+    enabledBorder: InputBorder.none,
+    focusedBorder: InputBorder.none,
+    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
     isCollapsed: true,
   );
 }

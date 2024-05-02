@@ -44,17 +44,22 @@ class _CreateTaskScreenBody extends StatelessWidget {
         padding: EdgeInsets.symmetric(
           horizontal: AppMeasures.padding(context),
         ),
-        child: const Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _TaskNameFieldWidget(),
-                SizedBox(height: 10),
-                _TaskDetailsFieldWidget(),
-                SizedBox(height: 20),
-                _SaveButtonWidget(),
-              ],
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              const _TaskNameFieldWidget(),
+              const SizedBox(height: 8),
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: AppColors.fourthDark,
+              ),
+              const SizedBox(height: 40),
+              const _TaskDetailsFieldWidget(),
+              const SizedBox(height: 40),
+              const _SaveButtonWidget(),
+            ],
           ),
         ),
       ),
@@ -69,8 +74,11 @@ class _TaskNameFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
-      decoration: _getTextFieldDecoration(context).copyWith(
-          hintText: AppLocalizations.of(context)!.taskNamePlaceholder),
+      decoration: _TextFieldDecoration.decoration.copyWith(
+        hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
+        hintStyle: Theme.of(context).textTheme.titleSmall,
+        counterText: '',
+      ),
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
@@ -94,8 +102,10 @@ class _TaskDetailsFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
-      decoration: _getTextFieldDecoration(context).copyWith(
-          hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder),
+      decoration: _TextFieldDecoration.decoration.copyWith(
+        hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder,
+        hintStyle: Theme.of(context).textTheme.titleSmall,
+      ),
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
@@ -147,17 +157,13 @@ class _SaveButtonWidget extends StatelessWidget {
   }
 }
 
-InputDecoration _getTextFieldDecoration(BuildContext context) {
-  return InputDecoration(
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppColors.thirdDark),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppColors.mainGreen),
-      ),
-      isCollapsed: true,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      hintStyle: Theme.of(context).textTheme.titleSmall);
+abstract class _TextFieldDecoration {
+  const _TextFieldDecoration();
+
+  static const decoration = InputDecoration(
+    enabledBorder: InputBorder.none,
+    focusedBorder: InputBorder.none,
+    contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+    isCollapsed: true,
+  );
 }
