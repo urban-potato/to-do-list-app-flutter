@@ -8,5 +8,11 @@
   "toDoTitlePlaceholder": "to do...",
   "toDoDetailsPlaceholder": "details...",
   "toDo": "To-do",
-  "delete": "Delete"
+  "delete": "Delete",
+  "noTasksToday": "No tasks for today.\nClick + to create a task.",
+  "noTasksOtherDays": "No tasks for other days.\nClick + to create a task.",
+  "noTasksDone": "No tasks done yet.\nLet''s get busy!",
+  "personComputer": "Person sitting carefree at the computer",
+  "personMeditate": "Person meditating in the office",
+  "personTasks": "Person checks off tasks on task list"
 }

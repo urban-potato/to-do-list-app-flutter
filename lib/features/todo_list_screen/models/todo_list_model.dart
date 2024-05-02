@@ -5,8 +5,8 @@ import 'package:to_do_list_app/entity/todo.dart';
 
 class ToDoListModel extends ChangeNotifier {
   final String boxName;
-  var _toDoList = <ToDo>[];
-  List<ToDo> get toDoList => _toDoList.toList();
+  List<ToDo>? _toDoList;
+  List<ToDo>? get toDoList => _toDoList?.toList();
 
   ToDoListModel({required this.boxName}) {
     _setup();
