@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_screen_model.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/no_tasks_widget.dart';
