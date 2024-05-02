@@ -22,6 +22,45 @@ class TasksListWidgetModel extends ChangeNotifier {
     await box.deleteAt(taskIndex);
   }
 
+  void moveTaskFromTodayToTomorrowOrViceVersa(
+      int taskIndex, bool isTodayTask) async {
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(TaskAdapter());
+    }
+
+    String fromBoxName;
+    String toBoxName;
+
+    if (isTodayTask) {
+      fromBoxName = HiveKeys.todayTasksBox;
+      toBoxName = HiveKeys.otherTasksBox;
+    } else {
+      fromBoxName = HiveKeys.otherTasksBox;
+      toBoxName = HiveKeys.todayTasksBox;
+    }
+
+    final fromBox = await Hive.openBox<Task>(fromBoxName);
+    Task? task = fromBox.getAt(taskIndex);
+    if (task == null) return;
+
+    DateTime newTaskDateTime;
+
+    if (isTodayTask) {
+      newTaskDateTime = DateTime(
+          task.dateTime.year, task.dateTime.month, task.dateTime.day + 1);
+    } else {
+      DateTime now = DateTime.now();
+      newTaskDateTime = DateTime(now.year, now.month, now.day);
+    }
+
+    task.dateTime = newTaskDateTime;
+
+    final toBox = await Hive.openBox<Task>(toBoxName);
+
+    toBox.add(task);
+    await fromBox.deleteAt(taskIndex);
+  }
+
   void completeOrUncompleteTask(int taskIndex) async {
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(TaskAdapter());
@@ -51,7 +90,7 @@ class TasksListWidgetModel extends ChangeNotifier {
     final toBox = await Hive.openBox<Task>(toBoxName);
 
     toBox.add(task);
-    deleteTask(taskIndex);
+    await fromBox.deleteAt(taskIndex);
   }
 
   void _getTasksFromHive(Box<Task> box) {

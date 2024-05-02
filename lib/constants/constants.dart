@@ -10,6 +10,8 @@ abstract class AppColors {
   static Color mainGreenDark = const Color(0xFF066736);
   static Color mainRed = const Color(0xFFE32C2C);
 
+  static Color mainBlue = const Color(0xFF2C7EE3);
+
   static Color mainTextDark = Colors.white;
   static Color secondaryTextDark = const Color(0xFF939393);
   static Color thirdTextDark = const Color(0xFFC9C9C9);

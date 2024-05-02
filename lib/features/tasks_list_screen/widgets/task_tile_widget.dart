@@ -52,24 +52,55 @@ class _TaskInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    DateTime todayDate = DateTime(now.year, now.month, now.day);
+
+    final isTodayTask = task.dateTime.compareTo(todayDate) == 0;
+
+    final String moveLabel = isTodayTask
+        ? AppLocalizations.of(context)!.tomorrow
+        : AppLocalizations.of(context)!.today;
+    final IconData moveIcon = isTodayTask
+        ? Icons.keyboard_double_arrow_right_rounded
+        : Icons.keyboard_double_arrow_left_rounded;
+
+    void handleSlidableActionMoveTap(BuildContext context) => isTodayTask
+        ? model.moveTaskFromTodayToTomorrowOrViceVersa(taskIndex, isTodayTask)
+        : model.moveTaskFromTodayToTomorrowOrViceVersa(taskIndex, isTodayTask);
+    void handleSlidableActionDeleteTap(BuildContext context) =>
+        model.deleteTask(taskIndex);
+
+    final SlidableAction slidableActionMove = SlidableAction(
+      onPressed: handleSlidableActionMoveTap,
+      backgroundColor: AppColors.mainGreen,
+      foregroundColor: AppColors.mainTextDark,
+      icon: moveIcon,
+      label: moveLabel,
+      padding: EdgeInsets.zero,
+    );
+
+    final SlidableAction slidableActionDelete = SlidableAction(
+      onPressed: handleSlidableActionDeleteTap,
+      backgroundColor: AppColors.mainRed,
+      foregroundColor: AppColors.mainTextDark,
+      icon: Icons.delete,
+      label: AppLocalizations.of(context)!.delete,
+      padding: EdgeInsets.zero,
+    );
+
+    final List<SlidableAction> slidableActions = task.isDone
+        ? [slidableActionDelete]
+        : [slidableActionMove, slidableActionDelete];
+
+    final double slidableExtentRatio = task.isDone ? 0.24 : 0.45;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Slidable(
         endActionPane: ActionPane(
-          extentRatio: 0.24,
+          extentRatio: slidableExtentRatio,
           motion: const ScrollMotion(),
-          children: [
-            SlidableAction(
-              onPressed: (BuildContext context) {
-                model.deleteTask(taskIndex);
-              },
-              backgroundColor: AppColors.mainRed,
-              foregroundColor: AppColors.mainTextDark,
-              icon: Icons.delete,
-              label: AppLocalizations.of(context)!.delete,
-              padding: EdgeInsets.zero,
-            ),
-          ],
+          children: slidableActions,
         ),
         child: Material(
           color: Colors.transparent,

@@ -14,5 +14,6 @@
   "noTasksDone": "No tasks done yet.\nLet''s get busy!",
   "personComputer": "Person sitting carefree at the computer",
   "personMeditate": "Person meditating in the office",
-  "personTasks": "Person checks off tasks on task list"
+  "personTasks": "Person checks off tasks on task list",
+  "tomorrow": "Tomorrow"
 }
