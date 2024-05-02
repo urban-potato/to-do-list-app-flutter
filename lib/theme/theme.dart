@@ -17,7 +17,7 @@ final darkTheme = ThemeData(
     titleTextStyle: TextStyle(
       color: AppColors.mainTextDark,
       fontWeight: FontWeight.w700,
-      fontSize: 28,
+      fontSize: 24,
     ),
     iconTheme: IconThemeData(color: AppColors.secondaryTextDark),
   ),
@@ -32,10 +32,9 @@ final darkTheme = ThemeData(
     elevation: 0,
     labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
       (Set<MaterialState> state) => state.contains(MaterialState.selected)
-          ? TextStyle(color: AppColors.mainGreen, fontSize: 14)
-          : TextStyle(color: AppColors.secondaryTextDark, fontSize: 14),
+          ? TextStyle(color: AppColors.mainGreen, fontSize: 12)
+          : TextStyle(color: AppColors.secondaryTextDark, fontSize: 12),
     ),
-    // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
   textTheme: GoogleFonts.interTextTheme(

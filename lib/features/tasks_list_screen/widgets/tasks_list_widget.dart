@@ -90,8 +90,10 @@ class _NoTasksWidget extends StatelessWidget {
         Center(
           child: Text(
             textUnderPicture,
-            style:
-                Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 20),
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall
+                ?.copyWith(fontSize: 18, fontWeight: FontWeight.w100),
             textAlign: TextAlign.center,
           ),
         ),

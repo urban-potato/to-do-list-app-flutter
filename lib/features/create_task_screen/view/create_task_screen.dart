@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:to_do_list_app/features/create_task_screen/models/create_task_screen_model.dart';
@@ -34,6 +35,10 @@ class _CreateTaskScreenBody extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.newTask),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black,
+          statusBarColor: AppColors.mainDark,
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -66,7 +71,7 @@ class _TaskNameFieldWidget extends StatelessWidget {
       autofocus: true,
       decoration: _getTextFieldDecoration(context).copyWith(
           hintText: AppLocalizations.of(context)!.taskNamePlaceholder),
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       textInputAction: TextInputAction.next,
@@ -91,7 +96,7 @@ class _TaskDetailsFieldWidget extends StatelessWidget {
       autofocus: true,
       decoration: _getTextFieldDecoration(context).copyWith(
           hintText: AppLocalizations.of(context)!.taskDetailsPlaceholder),
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
       // textInputAction: TextInputAction.done,

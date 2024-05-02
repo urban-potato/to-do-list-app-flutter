@@ -112,17 +112,17 @@ class _TaskInfoWidget extends StatelessWidget {
               AutoRouter.of(context).push(
                   TaskRoute(taskIndex: taskIndex, boxName: model.boxName));
             },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-              child: ListTile(
-                leading: _CheckBoxWidget(
-                    taskIndex: taskIndex, isDone: task.isDone, model: model),
-                title: Text(
-                  task.name,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                trailing: const Icon(Icons.chevron_right, size: 26),
+            child: ListTile(
+              leading: _CheckBoxWidget(
+                  taskIndex: taskIndex, isDone: task.isDone, model: model),
+              title: Text(
+                task.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontSize: 16),
               ),
+              trailing: const Icon(Icons.chevron_right, size: 26),
             ),
           ),
         ),
@@ -145,19 +145,20 @@ class _CheckBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final splachColor = isDone ? AppColors.mainDark : AppColors.mainGreen;
+    final checkBoxColor = isDone ? AppColors.thirdDark : Colors.transparent;
 
     return SizedBox(
-      height: 28,
-      width: 28,
+      height: 24,
+      width: 24,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.secondaryTextDark,
-        ),
+            borderRadius: BorderRadius.circular(9999),
+            color: checkBoxColor,
+            border: Border.all(color: AppColors.thirdDark, width: 2.5)),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(9999),
               splashColor: splachColor,
               onTap: () => model.completeOrUncompleteTask(taskIndex),
               child: isDone

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
@@ -59,17 +60,19 @@ class _TasksListScreenState extends State<TasksListScreen> {
       AppLocalizations.of(context)!.done,
     ];
 
+    const double navigationIconsSize = 24;
+
     _navigationItems ??= [
       NavigationDestination(
         selectedIcon: Icon(
           Icons.today,
           color: AppColors.mainDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         icon: Icon(
           Icons.today_outlined,
           color: AppColors.secondaryTextDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         label: AppLocalizations.of(context)!.today,
       ),
@@ -77,12 +80,12 @@ class _TasksListScreenState extends State<TasksListScreen> {
         selectedIcon: Icon(
           Icons.list_alt,
           color: AppColors.mainDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         icon: Icon(
           Icons.list_alt_outlined,
           color: AppColors.secondaryTextDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         label: AppLocalizations.of(context)!.other,
       ),
@@ -90,12 +93,12 @@ class _TasksListScreenState extends State<TasksListScreen> {
         selectedIcon: Icon(
           Icons.task_alt,
           color: AppColors.mainDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         icon: Icon(
           Icons.task_alt_outlined,
           color: AppColors.secondaryTextDark,
-          size: 26,
+          size: navigationIconsSize,
         ),
         label: AppLocalizations.of(context)!.done,
       ),
@@ -120,6 +123,10 @@ class _TasksListScreenState extends State<TasksListScreen> {
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
         actions: const <Widget>[_ChangeLocaleDropdownButtonWidget()],
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black, // Navigation bar
+          statusBarColor: AppColors.mainDark, // Status bar
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -133,6 +140,12 @@ class _TasksListScreenState extends State<TasksListScreen> {
         onDestinationSelected: _handleNavigationItemTap,
         selectedIndex: _currentPageIndex,
         indicatorColor: AppColors.mainGreen,
+        // indicatorColor: Colors.transparent,
+        // indicatorShape: StadiumBorder(side: BorderSide.none),
+        // indicatorShape: RoundedRectangleBorder(),
+        // elevation: 50,
+        // shadowColor: Colors.black,
+        height: 60,
         destinations: _navigationItems!,
       ),
       floatingActionButton: FloatingActionButton(
@@ -140,7 +153,7 @@ class _TasksListScreenState extends State<TasksListScreen> {
         tooltip: AppLocalizations.of(context)!.newTask,
         child: const Icon(
           Icons.add_rounded,
-          size: 30,
+          size: 26,
         ),
       ),
     );
@@ -152,16 +165,21 @@ class _ChangeLocaleDropdownButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(right: AppMeasures.padding(context)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<Language>(
+          // padding: EdgeInsets.only(right: AppMeasures.padding(context)),
+
+          // padding: EdgeInsets.zero,
+
           value: null,
           dropdownColor: AppColors.fourthDark,
+          borderRadius: BorderRadius.circular(12),
           icon: Icon(
             Icons.language,
             color: AppColors.mainTextDark,
-            size: 28,
+            size: 24,
           ),
           onChanged: (Language? language) =>
               _handleChangeLocale(language, context),
@@ -207,11 +225,11 @@ class _ChangeLocaleDropdownMenuItemWidget extends StatelessWidget {
       children: <Widget>[
         Text(
           language.flag,
-          style: const TextStyle(fontSize: 28, color: Colors.white),
+          style: const TextStyle(fontSize: 22, color: Colors.white),
         ),
         Text(
           language.name,
-          style: const TextStyle(fontSize: 20, color: Colors.white),
+          style: const TextStyle(fontSize: 16, color: Colors.white),
         )
       ],
     );

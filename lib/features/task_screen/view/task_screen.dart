@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/task_screen/models/task_screen_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,6 +48,10 @@ class _TaskScreenBody extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.task),
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.black, // Navigation bar
+          statusBarColor: AppColors.mainDark, // Status bar
+        ),
       ),
       body: SafeArea(
         child: Padding(
