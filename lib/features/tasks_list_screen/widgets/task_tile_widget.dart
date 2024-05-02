@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/entity/task.dart';
-import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_screen_model.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widget_model.dart';
 import 'package:to_do_list_app/router/router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,7 +14,7 @@ class TaskTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = TasksListScreenModelProvider.read(context)!.model;
+    final model = TasksListWidgetModelProvider.read(context)!.model;
     final task = model.tasksList?[taskIndex];
     final taskColor = task?.isDone ?? false
         ? AppColors.mainGreenDark
@@ -46,7 +46,7 @@ class _TaskInfoWidget extends StatelessWidget {
     required this.task,
   });
 
-  final TasksListScreenModel model;
+  final TasksListWidgetModel model;
   final int taskIndex;
   final Task task;
 
@@ -109,7 +109,7 @@ class _CheckBoxWidget extends StatelessWidget {
 
   final int taskIndex;
   final bool isDone;
-  final TasksListScreenModel model;
+  final TasksListWidgetModel model;
 
   @override
   Widget build(BuildContext context) {

@@ -3,12 +3,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/entity/task.dart';
 
-class TasksListScreenModel extends ChangeNotifier {
+class TasksListWidgetModel extends ChangeNotifier {
   final String boxName;
   List<Task>? _tasksList;
   List<Task>? get tasksList => _tasksList?.toList();
 
-  TasksListScreenModel({required this.boxName}) {
+  TasksListWidgetModel({required this.boxName}) {
     _setup();
   }
 
@@ -71,24 +71,24 @@ class TasksListScreenModel extends ChangeNotifier {
   }
 }
 
-class TasksListScreenModelProvider extends InheritedNotifier {
-  const TasksListScreenModelProvider({
+class TasksListWidgetModelProvider extends InheritedNotifier {
+  const TasksListWidgetModelProvider({
     super.key,
     required super.child,
     required this.model,
   }) : super(notifier: model);
 
-  final TasksListScreenModel model;
+  final TasksListWidgetModel model;
 
-  static TasksListScreenModelProvider? watch(BuildContext context) {
+  static TasksListWidgetModelProvider? watch(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<TasksListScreenModelProvider>();
+        .dependOnInheritedWidgetOfExactType<TasksListWidgetModelProvider>();
   }
 
-  static TasksListScreenModelProvider? read(BuildContext context) {
+  static TasksListWidgetModelProvider? read(BuildContext context) {
     final widget = context
-        .getElementForInheritedWidgetOfExactType<TasksListScreenModelProvider>()
+        .getElementForInheritedWidgetOfExactType<TasksListWidgetModelProvider>()
         ?.widget;
-    return widget is TasksListScreenModelProvider ? widget : null;
+    return widget is TasksListWidgetModelProvider ? widget : null;
   }
 }

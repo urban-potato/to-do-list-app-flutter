@@ -4,9 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/language.dart';
-import 'package:to_do_list_app/features/tasks_list_screen/widgets/done_tasks_widget.dart';
-import 'package:to_do_list_app/features/tasks_list_screen/widgets/other_tasks_widget.dart';
-import 'package:to_do_list_app/features/tasks_list_screen/widgets/today_tasks_widget.dart';
+import 'package:to_do_list_app/features/tasks_list_screen/widgets/tasks_list_widget.dart';
+import 'package:to_do_list_app/resources/resources.dart';
 import 'package:to_do_list_app/router/router.dart';
 import 'package:to_do_list_app/to_do_list_app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,18 +21,37 @@ class TasksListScreen extends StatefulWidget {
 class _TasksListScreenState extends State<TasksListScreen> {
   int _currentPageIndex = 0;
 
-  final List<Widget> _widgets = [
-    const TodayTasksWidget(),
-    const OtherTasksWidget(),
-    const DoneTasksWidget(),
-  ];
-
+  List<Widget>? _widgets;
   List<String>? _titles;
   List<Widget>? _navigationItems;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _widgets ??= [
+      TasksListWidget(
+        key: const Key(HiveKeys.todayTasksBox),
+        boxName: HiveKeys.todayTasksBox,
+        svgPicture: Svgs.personComputer,
+        svgSemanticsLabel: AppLocalizations.of(context)!.personComputer,
+        textUnderPicture: AppLocalizations.of(context)!.noTasksToday,
+      ),
+      TasksListWidget(
+        key: const Key(HiveKeys.otherTasksBox),
+        boxName: HiveKeys.otherTasksBox,
+        svgPicture: Svgs.personMeditate,
+        svgSemanticsLabel: AppLocalizations.of(context)!.personMeditate,
+        textUnderPicture: AppLocalizations.of(context)!.noTasksOtherDays,
+      ),
+      TasksListWidget(
+        key: const Key(HiveKeys.doneTasksBox),
+        boxName: HiveKeys.doneTasksBox,
+        svgPicture: Svgs.personTasks,
+        svgSemanticsLabel: AppLocalizations.of(context)!.personTasks,
+        textUnderPicture: AppLocalizations.of(context)!.noTasksDone,
+      ),
+    ];
 
     _titles ??= [
       AppLocalizations.of(context)!.today,
@@ -108,7 +126,7 @@ class _TasksListScreenState extends State<TasksListScreen> {
           padding: EdgeInsets.symmetric(
             horizontal: AppMeasures.padding(context),
           ),
-          child: _widgets[_currentPageIndex],
+          child: _widgets?[_currentPageIndex],
         ),
       ),
       bottomNavigationBar: NavigationBar(
