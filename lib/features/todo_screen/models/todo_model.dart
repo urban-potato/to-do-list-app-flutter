@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/entity/todo.dart';
 
 class ToDoModel extends ChangeNotifier {
@@ -18,7 +16,6 @@ class ToDoModel extends ChangeNotifier {
     required this.toDoIndex,
     required this.boxName,
   }) {
-    GetIt.I<Talker>().debug('Init ToDoModel');
     _setup();
   }
 
@@ -41,8 +38,6 @@ class ToDoModel extends ChangeNotifier {
   }
 
   void _setup() async {
-    GetIt.I<Talker>().debug('ToDoModel _setup');
-
     if (!Hive.isAdapterRegistered(0)) {
       Hive.registerAdapter(ToDoAdapter());
     }
@@ -54,13 +49,6 @@ class ToDoModel extends ChangeNotifier {
     toDoName = _toDo?.name ?? '';
     toDoDetails = _toDo?.details ?? '';
 
-    notifyListeners();
-    // box.listenable().addListener(() => _getToDoFromHive(box));
-  }
-
-  void _getToDoFromHive(Box<ToDo> box) {
-    GetIt.I<Talker>().debug('ToDoModel _getToDoFromHive');
-    _toDo = box.getAt(toDoIndex);
     notifyListeners();
   }
 }

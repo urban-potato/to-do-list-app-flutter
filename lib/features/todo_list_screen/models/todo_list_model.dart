@@ -18,10 +18,8 @@ class ToDoListModel extends ChangeNotifier {
     }
 
     final box = await Hive.openBox<ToDo>(boxName);
-    // final toDoKey = box.keyAt(toDoIndex);
 
     await box.deleteAt(toDoIndex);
-    // await box.delete(toDoKey);
   }
 
   void moveToDo(int toDoIndex) async {
@@ -37,9 +35,9 @@ class ToDoListModel extends ChangeNotifier {
     final now = DateTime.now();
     final date = DateTime(now.year, now.month, now.day);
 
-    if (boxName != HiveKeys.archiveToDosBox) {
+    if (boxName != HiveKeys.doneToDosBox) {
       toDo.isDone = true;
-      toBoxName = HiveKeys.archiveToDosBox;
+      toBoxName = HiveKeys.doneToDosBox;
     } else {
       toDo.isDone = false;
 
@@ -92,9 +90,4 @@ class ToDoListModelProvider extends InheritedNotifier {
         ?.widget;
     return widget is ToDoListModelProvider ? widget : null;
   }
-
-  // @override
-  // bool updateShouldNotify(ToDoListModelProvider oldWidget) {
-  //   return true;
-  // }
 }

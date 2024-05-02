@@ -37,5 +37,5 @@ abstract class SharedPreferencesKeys {
 abstract class HiveKeys {
   static const todayToDosBox = 'today_todos_box';
   static const otherToDosBox = 'other_todos_box';
-  static const archiveToDosBox = 'archive_todos_box';
+  static const doneToDosBox = 'done_todos_box';
 }

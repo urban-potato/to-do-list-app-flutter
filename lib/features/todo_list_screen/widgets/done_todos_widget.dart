@@ -6,27 +6,27 @@ import 'package:to_do_list_app/features/todo_list_screen/widgets/todo_tile_widge
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:to_do_list_app/resources/resources.dart';
 
-class ArchiveToDosWidget extends StatefulWidget {
-  const ArchiveToDosWidget({super.key});
+class DoneToDosWidget extends StatefulWidget {
+  const DoneToDosWidget({super.key});
 
   @override
-  State<ArchiveToDosWidget> createState() => _ArchiveToDosWidgetState();
+  State<DoneToDosWidget> createState() => _DoneToDosWidgetState();
 }
 
-class _ArchiveToDosWidgetState extends State<ArchiveToDosWidget> {
-  final _model = ToDoListModel(boxName: HiveKeys.archiveToDosBox);
+class _DoneToDosWidgetState extends State<DoneToDosWidget> {
+  final _model = ToDoListModel(boxName: HiveKeys.doneToDosBox);
 
   @override
   Widget build(BuildContext context) {
     return ToDoListModelProvider(
       model: _model,
-      child: const _ArchiveToDosWidgetBody(),
+      child: const _DoneToDosWidgetBody(),
     );
   }
 }
 
-class _ArchiveToDosWidgetBody extends StatelessWidget {
-  const _ArchiveToDosWidgetBody();
+class _DoneToDosWidgetBody extends StatelessWidget {
+  const _DoneToDosWidgetBody();
 
   @override
   Widget build(BuildContext context) {

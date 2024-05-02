@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
+import 'package:to_do_list_app/entity/todo.dart';
 import 'package:to_do_list_app/features/todo_list_screen/models/language.dart';
-import 'package:to_do_list_app/features/todo_list_screen/widgets/archive_todos_widget.dart';
+import 'package:to_do_list_app/features/todo_list_screen/widgets/done_todos_widget.dart';
 import 'package:to_do_list_app/features/todo_list_screen/widgets/other_todos_widget.dart';
 import 'package:to_do_list_app/features/todo_list_screen/widgets/today_todos_widget.dart';
 import 'package:to_do_list_app/router/router.dart';
@@ -25,7 +27,7 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
   final List<Widget> _widgets = [
     const TodayToDosWidget(),
     const OtherToDosWidget(),
-    const ArchiveToDosWidget(),
+    const DoneToDosWidget(),
   ];
 
   List<String>? _titles;
@@ -102,10 +104,6 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         titleSpacing: AppMeasures.padding(context),
         scrolledUnderElevation: 0,
         actions: const <Widget>[_ChangeLocaleDropdownButtonWidget()],
-        // systemOverlayStyle: SystemUiOverlayStyle(
-        //   systemNavigationBarColor: AppColors.fourthDark, // Navigation bar
-        //   statusBarColor: AppColors.fourthDark, // Status bar
-        // ),
       ),
       body: SafeArea(
         child: Padding(
@@ -116,12 +114,9 @@ class _ToDoListScreenState extends State<ToDoListScreen> {
         ),
       ),
       bottomNavigationBar: NavigationBar(
-        // height: 60,
         onDestinationSelected: _handleNavigationItemTap,
         selectedIndex: _currentPageIndex,
         indicatorColor: AppColors.mainGreen,
-        // indicatorShape:
-        //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         destinations: _navigationItems!,
       ),
       floatingActionButton: FloatingActionButton(
