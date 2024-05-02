@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widget_model.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/task_tile_widget.dart';
+import 'package:to_do_list_app/resources/resources.dart';
 
 class TasksListWidget extends StatefulWidget {
   const TasksListWidget({
@@ -36,25 +37,13 @@ class _TasksListWidgetState extends State<TasksListWidget> {
   Widget build(BuildContext context) {
     return TasksListWidgetModelProvider(
       model: _model,
-      child: _TasksWidgetBody(
-        svgPicture: widget.svgPicture,
-        svgSemanticsLabel: widget.svgSemanticsLabel,
-        textUnderPicture: widget.textUnderPicture,
-      ),
+      child: const _TasksWidgetBody(),
     );
   }
 }
 
 class _TasksWidgetBody extends StatelessWidget {
-  const _TasksWidgetBody({
-    required this.svgPicture,
-    required this.svgSemanticsLabel,
-    required this.textUnderPicture,
-  });
-
-  final String svgPicture;
-  final String svgSemanticsLabel;
-  final String textUnderPicture;
+  const _TasksWidgetBody();
 
   @override
   Widget build(BuildContext context) {
@@ -64,28 +53,30 @@ class _TasksWidgetBody extends StatelessWidget {
     return tasksListLength == null
         ? const Center(child: CircularProgressIndicator())
         : tasksListLength == 0
-            ? _NoTasksWidget(
-                svgPicture: svgPicture,
-                svgSemanticsLabel: svgSemanticsLabel,
-                textUnderPicture: textUnderPicture,
-              )
+            ? const _NoTasksWidget()
             : _TasksListBuilderWidget(tasksListLength: tasksListLength);
   }
 }
 
 class _NoTasksWidget extends StatelessWidget {
-  const _NoTasksWidget({
-    required this.svgPicture,
-    required this.svgSemanticsLabel,
-    required this.textUnderPicture,
-  });
-
-  final String svgPicture;
-  final String svgSemanticsLabel;
-  final String textUnderPicture;
+  const _NoTasksWidget();
 
   @override
   Widget build(BuildContext context) {
+    final pictureWidth = MediaQuery.of(context).size.width -
+        AppMeasures.picturesPadding(context);
+    final String svgPicture =
+        context.findAncestorWidgetOfExactType<TasksListWidget>()?.svgPicture ??
+            Svgs.personComputer;
+    final String svgSemanticsLabel = context
+            .findAncestorWidgetOfExactType<TasksListWidget>()
+            ?.svgSemanticsLabel ??
+        '';
+    final String textUnderPicture = context
+            .findAncestorWidgetOfExactType<TasksListWidget>()
+            ?.textUnderPicture ??
+        '';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,8 +85,7 @@ class _NoTasksWidget extends StatelessWidget {
           svgPicture,
           semanticsLabel: svgSemanticsLabel,
           fit: BoxFit.scaleDown,
-          width: MediaQuery.of(context).size.width -
-              AppMeasures.picturesPadding(context),
+          width: pictureWidth,
         ),
         Center(
           child: Text(
