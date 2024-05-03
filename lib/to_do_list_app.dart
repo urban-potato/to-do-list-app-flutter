@@ -18,6 +18,9 @@ class ToDoListApp extends StatefulWidget {
         context.findAncestorStateOfType<_ToDoListAppState>();
     state?.setLocale(newLocale);
   }
+
+  static String? getLocale(BuildContext context) =>
+      context.findAncestorStateOfType<_ToDoListAppState>()?.locale;
 }
 
 class _ToDoListAppState extends State<ToDoListApp> {
@@ -29,6 +32,8 @@ class _ToDoListAppState extends State<ToDoListApp> {
       _locale = value;
     });
   }
+
+  String get locale => _locale;
 
   @override
   void initState() {

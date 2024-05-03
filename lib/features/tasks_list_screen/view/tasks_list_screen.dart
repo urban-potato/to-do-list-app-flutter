@@ -26,11 +26,31 @@ class _TasksListScreenState extends State<TasksListScreen> {
   List<String>? _titles;
   List<Widget>? _navigationItems;
 
+  String? _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _locale = ToDoListApp.getLocale(context);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _widgets ??= [
+    final currentLocale = ToDoListApp.getLocale(context);
+
+    if (_widgets != null &&
+        _titles != null &&
+        _navigationItems != null &&
+        currentLocale == _locale) return;
+
+    _locale = currentLocale;
+    _updateData(context);
+  }
+
+  void _updateData(BuildContext context) {
+    _widgets = [
       TasksListWidget(
         key: const Key(HiveKeys.todayTasksBox),
         boxName: HiveKeys.todayTasksBox,
@@ -54,7 +74,7 @@ class _TasksListScreenState extends State<TasksListScreen> {
       ),
     ];
 
-    _titles ??= [
+    _titles = [
       AppLocalizations.of(context)!.today,
       AppLocalizations.of(context)!.other,
       AppLocalizations.of(context)!.done,
@@ -62,7 +82,7 @@ class _TasksListScreenState extends State<TasksListScreen> {
 
     const double navigationIconsSize = 24;
 
-    _navigationItems ??= [
+    _navigationItems = [
       NavigationDestination(
         selectedIcon: Icon(
           Icons.today,
