@@ -94,6 +94,9 @@ class _TaskInfoWidget extends StatelessWidget {
 
     final double slidableExtentRatio = task.isDone ? 0.24 : 0.45;
 
+    final splashColor =
+        task.isDone ? AppColors.splashGreen : AppColors.splashGray;
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Slidable(
@@ -107,7 +110,8 @@ class _TaskInfoWidget extends StatelessWidget {
           elevation: 0,
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
-            splashColor: AppColors.secondaryDark,
+            splashColor: splashColor,
+            highlightColor: splashColor,
             onTap: () {
               AutoRouter.of(context).push(
                   TaskRoute(taskIndex: taskIndex, boxName: model.boxName));
@@ -144,8 +148,9 @@ class _CheckBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final splachColor = isDone ? AppColors.mainDark : AppColors.mainGreen;
     final checkBoxColor = isDone ? AppColors.thirdDark : Colors.transparent;
+    final splashColor =
+        isDone ? AppColors.splashSuperLightGray : AppColors.splashLightGray;
 
     return SizedBox(
       height: 24,
@@ -159,7 +164,8 @@ class _CheckBoxWidget extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
               borderRadius: BorderRadius.circular(9999),
-              splashColor: splachColor,
+              splashColor: splashColor,
+              highlightColor: splashColor,
               onTap: () => model.completeOrUncompleteTask(taskIndex),
               child: isDone
                   ? Icon(Icons.done, color: AppColors.mainGreenDark)

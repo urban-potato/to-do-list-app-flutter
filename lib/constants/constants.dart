@@ -15,6 +15,11 @@ abstract class AppColors {
   static Color mainTextDark = Colors.white;
   static Color secondaryTextDark = const Color(0xFF939393);
   static Color thirdTextDark = const Color(0xFFC9C9C9);
+
+  static Color splashGreen = const Color.fromARGB(255, 9, 143, 76);
+  static Color splashGray = const Color.fromARGB(255, 88, 88, 88);
+  static Color splashLightGray = const Color.fromARGB(255, 119, 119, 119);
+  static Color splashSuperLightGray = const Color.fromARGB(255, 159, 159, 159);
 }
 
 abstract class AppMeasures {
