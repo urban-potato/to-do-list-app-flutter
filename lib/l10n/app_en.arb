@@ -15,5 +15,6 @@
   "personComputer": "Person sitting carefree at the computer",
   "personMeditate": "Person meditating in the office",
   "personTasks": "Person checks off tasks on task list",
-  "tomorrow": "Tomorrow"
+  "tomorrow": "Tomorrow",
+  "changeLanguage": "Change language"
 }

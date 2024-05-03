@@ -144,8 +144,8 @@ class _TasksListScreenState extends State<TasksListScreen> {
         scrolledUnderElevation: 0,
         actions: const <Widget>[_ChangeLocaleDropdownButtonWidget()],
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.black, // Navigation bar
-          statusBarColor: AppColors.mainDark, // Status bar
+          systemNavigationBarColor: Colors.black,
+          statusBarColor: AppColors.mainDark,
         ),
       ),
       body: SafeArea(
@@ -160,11 +160,6 @@ class _TasksListScreenState extends State<TasksListScreen> {
         onDestinationSelected: _handleNavigationItemTap,
         selectedIndex: _currentPageIndex,
         indicatorColor: AppColors.mainGreen,
-        // indicatorColor: Colors.transparent,
-        // indicatorShape: StadiumBorder(side: BorderSide.none),
-        // indicatorShape: RoundedRectangleBorder(),
-        // elevation: 50,
-        // shadowColor: Colors.black,
         height: 60,
         destinations: _navigationItems!,
       ),
@@ -185,33 +180,39 @@ class _ChangeLocaleDropdownButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dropdownItems = Language.languageList()
+        .map<DropdownMenuItem<Language>>(
+          (language) => DropdownMenuItem<Language>(
+            value: language,
+            child: _ChangeLocaleDropdownMenuItemWidget(language: language),
+          ),
+        )
+        .toList();
+
     return Padding(
       padding: EdgeInsets.only(right: AppMeasures.padding(context)),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<Language>(
-          // padding: EdgeInsets.only(right: AppMeasures.padding(context)),
-
-          // padding: EdgeInsets.zero,
-
-          value: null,
-          dropdownColor: AppColors.fourthDark,
-          borderRadius: BorderRadius.circular(12),
-          icon: Icon(
-            Icons.language,
-            color: AppColors.mainTextDark,
-            size: 24,
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          splashColor: AppColors.mainDark,
+          highlightColor: AppColors.mainDark,
+          hoverColor: AppColors.mainDark,
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<Language>(
+            focusColor: Colors.transparent,
+            iconDisabledColor: AppColors.fourthDark,
+            iconEnabledColor: AppColors.mainTextDark,
+            value: null,
+            dropdownColor: AppColors.fourthDark,
+            borderRadius: BorderRadius.circular(12),
+            icon: Icon(
+              Icons.language,
+              semanticLabel: AppLocalizations.of(context)!.changeLanguage,
+            ),
+            onChanged: (Language? language) =>
+                _handleChangeLocale(language, context),
+            items: dropdownItems,
           ),
-          onChanged: (Language? language) =>
-              _handleChangeLocale(language, context),
-          items: Language.languageList()
-              .map<DropdownMenuItem<Language>>(
-                (language) => DropdownMenuItem<Language>(
-                  value: language,
-                  child:
-                      _ChangeLocaleDropdownMenuItemWidget(language: language),
-                ),
-              )
-              .toList(),
         ),
       ),
     );
