@@ -11,5 +11,5 @@ This application helps you organize your work and keep track of tasks.
 ## Preview
 
 <p align="center">
-  <img alt="gif preview" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/preview.gif" width="300">
+  <img alt="gif preview" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/preview.gif?raw=true" width="300">
 </p>
