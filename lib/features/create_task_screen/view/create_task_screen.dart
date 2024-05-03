@@ -82,7 +82,7 @@ class _TaskNameFieldWidget extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
-      textInputAction: TextInputAction.newline,
+      textInputAction: TextInputAction.done,
       minLines: null,
       maxLines: null,
       maxLength: 256,
@@ -91,6 +91,8 @@ class _TaskNameFieldWidget extends StatelessWidget {
       },
       onChanged: (String value) =>
           CreateTaskScreenModelProvider.read(context)?.model.taskName = value,
+      onEditingComplete: () =>
+          CreateTaskScreenModelProvider.read(context)?.model.saveTask(context),
     );
   }
 }
