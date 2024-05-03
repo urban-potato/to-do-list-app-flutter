@@ -27,8 +27,8 @@ This application helps you organize your work and keep track of tasks.
 
 ### Create task
 
-<img alt="create tast screen" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/create_task.jpg?raw=true" width="300">
+<img alt="create task screen" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/create_task.jpg?raw=true" width="300">
 
 ### View / Edit task
 
-<img alt="create tast screen" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/task.jpg?raw=true" width="300">
+<img alt="view or edit task screen" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/task.jpg?raw=true" width="300">
