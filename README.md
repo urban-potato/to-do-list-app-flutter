@@ -1,16 +1,15 @@
-# to_do_list_app
+# To-do list App
 
-A new Flutter project.
+This application helps you organize your work and keep track of tasks.
 
-## Getting Started
+## Technologies
 
-This project is a starting point for a Flutter application.
+- Dart
+- Flutter
+- Hive
 
-A few resources to get you started if this is your first Flutter project:
+## Preview
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+  <img alt="gif preview" src="https://github.com/urban-potato/to-do-list-app-flutter/blob/main/preview/preview.gif" width="300">
+</p>
