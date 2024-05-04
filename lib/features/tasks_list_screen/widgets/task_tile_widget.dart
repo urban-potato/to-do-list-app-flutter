@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/entity/task.dart';
+import 'package:to_do_list_app/data/entity/task.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widget_model.dart';
 import 'package:to_do_list_app/router/router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

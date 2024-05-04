@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/entity/task.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
+import 'package:to_do_list_app/data/entity/task.dart';
 
 class TasksListWidgetModel extends ChangeNotifier {
   final String boxName;
+
   List<Task>? _tasksList;
   List<Task>? get tasksList => _tasksList?.toList();
 
@@ -13,21 +15,13 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   void deleteTask(int taskIndex) async {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
-    final box = await Hive.openBox<Task>(boxName);
+    final box = await HiveBoxManager.instance.openTaskBox(boxName);
 
     await box.deleteAt(taskIndex);
   }
 
   void moveTaskFromTodayToTomorrowOrViceVersa(
       int taskIndex, bool isTodayTask) async {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
     String fromBoxName;
     String toBoxName;
 
@@ -39,7 +33,7 @@ class TasksListWidgetModel extends ChangeNotifier {
       toBoxName = HiveKeys.todayTasksBox;
     }
 
-    final fromBox = await Hive.openBox<Task>(fromBoxName);
+    final fromBox = await HiveBoxManager.instance.openTaskBox(fromBoxName);
     Task? task = fromBox.getAt(taskIndex);
     if (task == null) return;
 
@@ -55,18 +49,15 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     task.dateTime = newTaskDateTime;
 
-    final toBox = await Hive.openBox<Task>(toBoxName);
+    final toBox = await HiveBoxManager.instance.openTaskBox(toBoxName);
 
     toBox.add(task);
     await fromBox.deleteAt(taskIndex);
   }
 
   void completeOrUncompleteTask(int taskIndex) async {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
+    final fromBox = await HiveBoxManager.instance.openTaskBox(boxName);
 
-    final fromBox = await Hive.openBox<Task>(boxName);
     Task? task = fromBox.getAt(taskIndex);
     if (task == null) return;
 
@@ -83,7 +74,7 @@ class TasksListWidgetModel extends ChangeNotifier {
       toBoxName = HiveKeys.todayTasksBox;
     }
 
-    final toBox = await Hive.openBox<Task>(toBoxName);
+    final toBox = await HiveBoxManager.instance.openTaskBox(toBoxName);
 
     toBox.add(task);
     await fromBox.deleteAt(taskIndex);
@@ -95,11 +86,7 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   void _setup() async {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
-    final box = await Hive.openBox<Task>(boxName);
+    final box = await HiveBoxManager.instance.openTaskBox(boxName);
     _getTasksFromHive(box);
 
     box.listenable().addListener(() => _getTasksFromHive(box));

@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/entity/task.dart';
+import 'package:to_do_list_app/data/entity/task.dart';
 
 class CreateTaskScreenModel {
   var taskName = '';
