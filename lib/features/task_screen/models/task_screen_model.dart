@@ -1,55 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
 
 class TaskScreenModel extends ChangeNotifier {
+  Task task;
   final int taskIndex;
   final String boxName;
-
-  Task? _task;
-  Task? get task => _task;
 
   late String taskName;
   late String taskDetails;
 
   TaskScreenModel({
+    required this.task,
     required this.taskIndex,
     required this.boxName,
   }) {
     _setup();
   }
 
-  void saveTask() async {
-    if (taskName.isEmpty) return;
-    if (taskName == _task?.name && taskDetails == _task?.details) return;
-
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
-    final box = await Hive.openBox<Task>(boxName);
-
-    _task?.name = taskName;
-    _task?.details = taskDetails;
-
-    if (_task != null) {
-      await box.putAt(taskIndex, _task!);
-    }
-  }
-
-  void _setup() async {
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
-    final box = await Hive.openBox<Task>(boxName);
-
-    _task = box.getAt(taskIndex);
-
-    taskName = _task?.name ?? '';
-    taskDetails = _task?.details ?? '';
+  Future<void> _setup() async {
+    taskName = task.name;
+    taskDetails = task.details;
 
     notifyListeners();
+  }
+
+  Future<void> saveTask() async {
+    if (taskName.isEmpty) return;
+    if (taskName == task.name && taskDetails == task.details) return;
+
+    task.name = taskName;
+    task.details = taskDetails;
+
+    final box = await HiveBoxManager.instance.openTaskBox(boxName);
+
+    await box.putAt(taskIndex, task);
   }
 }
 

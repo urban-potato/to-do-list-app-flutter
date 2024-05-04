@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
 
 class CreateTaskScreenModel {
@@ -11,11 +11,8 @@ class CreateTaskScreenModel {
   void saveTask(BuildContext context) async {
     if (taskName.isEmpty) return;
 
-    if (!Hive.isAdapterRegistered(0)) {
-      Hive.registerAdapter(TaskAdapter());
-    }
-
-    final box = await Hive.openBox<Task>(HiveKeys.todayTasksBox);
+    final box =
+        await HiveBoxManager.instance.openTaskBox(HiveKeys.todayTasksBox);
 
     DateTime now = DateTime.now();
     final task = Task(

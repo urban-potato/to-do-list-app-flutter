@@ -27,6 +27,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: TaskScreen(
           key: args.key,
+          task: args.task,
           taskIndex: args.taskIndex,
           boxName: args.boxName,
         ),
@@ -60,6 +61,7 @@ class CreateTaskRoute extends PageRouteInfo<void> {
 class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
   TaskRoute({
     Key? key,
+    required Task task,
     required int taskIndex,
     required String boxName,
     List<PageRouteInfo>? children,
@@ -67,6 +69,7 @@ class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
           TaskRoute.name,
           args: TaskRouteArgs(
             key: key,
+            task: task,
             taskIndex: taskIndex,
             boxName: boxName,
           ),
@@ -81,11 +84,14 @@ class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
 class TaskRouteArgs {
   const TaskRouteArgs({
     this.key,
+    required this.task,
     required this.taskIndex,
     required this.boxName,
   });
 
   final Key? key;
+
+  final Task task;
 
   final int taskIndex;
 
@@ -93,7 +99,7 @@ class TaskRouteArgs {
 
   @override
   String toString() {
-    return 'TaskRouteArgs{key: $key, taskIndex: $taskIndex, boxName: $boxName}';
+    return 'TaskRouteArgs{key: $key, task: $task, taskIndex: $taskIndex, boxName: $boxName}';
   }
 }
 

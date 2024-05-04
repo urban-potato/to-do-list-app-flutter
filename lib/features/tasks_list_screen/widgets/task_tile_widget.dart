@@ -113,12 +113,18 @@ class _TaskInfoWidget extends StatelessWidget {
             splashColor: splashColor,
             highlightColor: splashColor,
             onTap: () {
-              AutoRouter.of(context).push(
-                  TaskRoute(taskIndex: taskIndex, boxName: model.boxName));
+              AutoRouter.of(context).push(TaskRoute(
+                task: task,
+                taskIndex: taskIndex,
+                boxName: model.boxName,
+              ));
             },
             child: ListTile(
               leading: _CheckBoxWidget(
-                  taskIndex: taskIndex, isDone: task.isDone, model: model),
+                taskIndex: taskIndex,
+                isDone: task.isDone,
+                model: model,
+              ),
               title: Text(
                 task.name,
                 style: Theme.of(context)

@@ -2,13 +2,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:to_do_list_app/constants/constants.dart';
+import 'package:to_do_list_app/data/entity/task.dart';
 import 'package:to_do_list_app/features/task_screen/models/task_screen_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key, required this.taskIndex, required this.boxName});
+  const TaskScreen(
+      {super.key,
+      required this.task,
+      required this.taskIndex,
+      required this.boxName});
 
+  final Task task;
   final int taskIndex;
   final String boxName;
 
@@ -22,8 +28,10 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _model ??=
-        TaskScreenModel(taskIndex: widget.taskIndex, boxName: widget.boxName);
+    _model ??= TaskScreenModel(
+        task: widget.task,
+        taskIndex: widget.taskIndex,
+        boxName: widget.boxName);
   }
 
   @override

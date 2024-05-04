@@ -6,6 +6,7 @@ import 'package:to_do_list_app/data/entity/task.dart';
 
 class TasksListWidgetModel extends ChangeNotifier {
   final String boxName;
+  late final Future<Box<Task>> _box;
 
   List<Task>? _tasksList;
   List<Task>? get tasksList => _tasksList?.toList();
@@ -14,13 +15,23 @@ class TasksListWidgetModel extends ChangeNotifier {
     _setup();
   }
 
-  void deleteTask(int taskIndex) async {
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
+  Future<void> _setup() async {
+    _box = HiveBoxManager.instance.openTaskBox(boxName);
+    await _getTasksFromHive();
 
-    await box.deleteAt(taskIndex);
+    (await _box).listenable().addListener(_getTasksFromHive);
   }
 
-  void moveTaskFromTodayToTomorrowOrViceVersa(
+  Future<void> _getTasksFromHive() async {
+    _tasksList = (await _box).values.toList();
+    notifyListeners();
+  }
+
+  Future<void> deleteTask(int taskIndex) async {
+    await (await _box).deleteAt(taskIndex);
+  }
+
+  Future<void> moveTaskFromTodayToTomorrowOrViceVersa(
       int taskIndex, bool isTodayTask) async {
     String fromBoxName;
     String toBoxName;
@@ -55,8 +66,8 @@ class TasksListWidgetModel extends ChangeNotifier {
     await fromBox.deleteAt(taskIndex);
   }
 
-  void completeOrUncompleteTask(int taskIndex) async {
-    final fromBox = await HiveBoxManager.instance.openTaskBox(boxName);
+  Future<void> completeOrUncompleteTask(int taskIndex) async {
+    final fromBox = await _box;
 
     Task? task = fromBox.getAt(taskIndex);
     if (task == null) return;
@@ -78,18 +89,6 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     toBox.add(task);
     await fromBox.deleteAt(taskIndex);
-  }
-
-  void _getTasksFromHive(Box<Task> box) {
-    _tasksList = box.values.toList();
-    notifyListeners();
-  }
-
-  void _setup() async {
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
-    _getTasksFromHive(box);
-
-    box.listenable().addListener(() => _getTasksFromHive(box));
   }
 }
 
