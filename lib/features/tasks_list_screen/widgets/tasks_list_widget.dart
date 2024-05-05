@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widget_model.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/task_tile_widget.dart';
 import 'package:to_do_list_app/resources/resources.dart';
@@ -26,8 +27,9 @@ class TasksListWidget extends StatefulWidget {
 }
 
 class _TasksListWidgetState extends State<TasksListWidget> {
-  late final TasksListWidgetModel _model;
-  Future<int>? _modelSetup;
+  // late final TasksListWidgetModel _model;
+  // Future<int>? _modelSetup;
+  Future<TasksListWidgetModel>? _model;
 
   @override
   void initState() {
@@ -36,9 +38,44 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
     super.initState();
 
-    _model = TasksListWidgetModel(boxName: widget.boxName);
-    _modelSetup = _model.setupModel();
+    _model = TasksListWidgetModel.create(widget.boxName);
   }
+
+  // @override
+  // void initState() {
+  //   GetIt.I<Talker>()
+  //       .debug('(${widget.boxName}) ----- TasksListWidget initState -----');
+
+  //   super.initState();
+
+  //   _model = TasksListWidgetModel(boxName: widget.boxName);
+  //   _modelSetup = _model.setupModel();
+  // }
+
+  // @override
+  // Future<void> dispose() async {
+  //   GetIt.I<Talker>()
+  //       .debug('(${widget.boxName}) ----- TasksListWidget dispose -----');
+
+  //   // await _model.dispose();
+
+  //   Future.delayed(Duration.zero, () async {
+  //     await _model.dispose();
+  //   });
+
+  //   super.dispose();
+  // }
+
+  // @override
+  // void dispose() {
+  //   GetIt.I<Talker>()
+  //       .debug('(${widget.boxName}) ----- TasksListWidget dispose -----');
+
+  //   _model.dispose();
+  //   super.dispose();
+
+  //   HiveBoxManager.instance.closeTaskBox(widget.boxName);
+  // }
 
   @override
   Future<void> dispose() async {
@@ -48,7 +85,7 @@ class _TasksListWidgetState extends State<TasksListWidget> {
     // await _model.dispose();
 
     Future.delayed(Duration.zero, () async {
-      await _model.dispose();
+      await (await _model)?.dispose();
     });
 
     super.dispose();
@@ -56,13 +93,14 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<int>(
-        future: _modelSetup,
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          if (snapshot.hasData) {
+    return FutureBuilder<TasksListWidgetModel>(
+        future: _model,
+        builder: (BuildContext context,
+            AsyncSnapshot<TasksListWidgetModel> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
             return TasksListWidgetModelProvider(
               key: Key('${widget.boxName}_provider'),
-              model: _model,
+              model: snapshot.data!,
               child: const _TasksWidgetBody(),
             );
           } else {

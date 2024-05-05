@@ -15,11 +15,24 @@ class TasksListWidgetModel extends ChangeNotifier {
   int _tasksListLength = 0;
   int get tasksListLength => _tasksListLength;
 
-  TasksListWidgetModel({required this.boxName}) {
+  // Private constructor
+  TasksListWidgetModel._create({required this.boxName}) {
     GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel init');
   }
 
-  Future<int> setupModel() async {
+  // Public factory
+  static Future<TasksListWidgetModel> create(String boxName) async {
+    // Call the private constructor
+    final component = TasksListWidgetModel._create(boxName: boxName);
+
+    // Do initialization that requires async
+    await component._setup();
+
+    // Return the fully initialized object
+    return component;
+  }
+
+  Future<void> _setup() async {
     GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel _setup');
 
     _box = await HiveBoxManager.instance.openTaskBox(boxName);
@@ -27,9 +40,45 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     _listenableBox = _box.listenable();
     _listenableBox?.addListener(_getTasksNumberFromHive);
-
-    return 0;
   }
+
+  // TasksListWidgetModel({required this.boxName}) {
+  //   GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel init');
+  // }
+
+  // Future<int> setupModel() async {
+  //   GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel _setup');
+
+  //   _box = await HiveBoxManager.instance.openTaskBox(boxName);
+  //   _getTasksNumberFromHive();
+
+  //   _listenableBox = _box.listenable();
+  //   _listenableBox?.addListener(_getTasksNumberFromHive);
+
+  //   return 0;
+  // }
+
+  // @override
+  // Future<void> dispose() async {
+  //   GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel dispose');
+
+  //   _listenableBox?.removeListener(_getTasksNumberFromHive);
+
+  //   Future.delayed(Duration.zero, () async {
+  //     await HiveBoxManager.instance.closeTaskBox(boxName);
+  //   });
+
+  //   super.dispose();
+  // }
+
+  // @override
+  // void dispose() {
+  //   GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel dispose');
+
+  //   _listenableBox?.removeListener(_getTasksNumberFromHive);
+
+  //   super.dispose();
+  // }
 
   @override
   Future<void> dispose() async {
