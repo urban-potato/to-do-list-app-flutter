@@ -31,7 +31,8 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
   @override
   void initState() {
-    GetIt.I<Talker>().debug('----- TasksListWidget initState -----');
+    GetIt.I<Talker>()
+        .debug('(${widget.boxName}) ----- TasksListWidget initState -----');
 
     super.initState();
 
@@ -41,7 +42,8 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
   @override
   Future<void> dispose() async {
-    GetIt.I<Talker>().debug('----- TasksListWidget dispose -----');
+    GetIt.I<Talker>()
+        .debug('(${widget.boxName}) ----- TasksListWidget dispose -----');
 
     // await _model.dispose();
 

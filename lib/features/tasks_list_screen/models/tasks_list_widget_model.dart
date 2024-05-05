@@ -9,23 +9,23 @@ import 'package:to_do_list_app/data/entity/task.dart';
 
 class TasksListWidgetModel extends ChangeNotifier {
   final String boxName;
-  // late final Future<Box<Task>> _box;
+  late final Box<Task> _box;
   ValueListenable<Box<Task>>? _listenableBox;
 
   int _tasksListLength = 0;
   int get tasksListLength => _tasksListLength;
 
   TasksListWidgetModel({required this.boxName}) {
-    GetIt.I<Talker>().debug('TasksListWidgetModel init');
+    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel init');
   }
 
   Future<int> setupModel() async {
-    GetIt.I<Talker>().debug('TasksListWidgetModel _setup');
+    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel _setup');
 
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
-    await _getTasksNumberFromHive();
+    _box = await HiveBoxManager.instance.openTaskBox(boxName);
+    _getTasksNumberFromHive();
 
-    _listenableBox = box.listenable();
+    _listenableBox = _box.listenable();
     _listenableBox?.addListener(_getTasksNumberFromHive);
 
     return 0;
@@ -33,7 +33,7 @@ class TasksListWidgetModel extends ChangeNotifier {
 
   @override
   Future<void> dispose() async {
-    GetIt.I<Talker>().debug('TasksListWidgetModel dispose');
+    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel dispose');
 
     _listenableBox?.removeListener(_getTasksNumberFromHive);
 
@@ -44,18 +44,14 @@ class TasksListWidgetModel extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> _getTasksNumberFromHive() async {
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
-    _tasksListLength = box.length;
-    await HiveBoxManager.instance.closeTaskBox(boxName);
+  void _getTasksNumberFromHive() {
+    _tasksListLength = _box.length;
 
     notifyListeners();
   }
 
-  Future<Task?> getTaskFromHive(int taskIndex) async {
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
-    final task = box.getAt(taskIndex);
-    await HiveBoxManager.instance.closeTaskBox(boxName);
+  Task? getTaskFromHive(int taskIndex) {
+    final task = _box.getAt(taskIndex);
 
     return task;
   }
@@ -64,11 +60,10 @@ class TasksListWidgetModel extends ChangeNotifier {
     await task.delete();
   }
 
-  Future<void> moveTaskFromTodayToTomorrowOrViceVersa(
-      Task task, bool isTodayTask) async {
+  Future<void> moveTaskFromTodayToTomorrowOrViceVersa(Task task) async {
     String toBoxName;
 
-    if (isTodayTask) {
+    if (boxName == HiveKeys.todayTasksBox) {
       toBoxName = HiveKeys.otherTasksBox;
     } else {
       toBoxName = HiveKeys.todayTasksBox;
@@ -76,7 +71,7 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     DateTime newTaskDateTime;
 
-    if (isTodayTask) {
+    if (boxName == HiveKeys.todayTasksBox) {
       newTaskDateTime = DateTime(
           task.dateTime.year, task.dateTime.month, task.dateTime.day + 1);
     } else {

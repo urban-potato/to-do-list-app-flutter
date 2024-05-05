@@ -7,71 +7,34 @@ import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widg
 import 'package:to_do_list_app/router/router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TaskTileWidget extends StatefulWidget {
+class TaskTileWidget extends StatelessWidget {
   const TaskTileWidget({super.key, required this.taskIndex});
 
   final int taskIndex;
 
   @override
-  State<TaskTileWidget> createState() => _TaskTileWidgetState();
-}
-
-class _TaskTileWidgetState extends State<TaskTileWidget> {
-  Future<Task?>? task;
-  TasksListWidgetModel? model;
-  // bool? isTaskDone;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    model = TasksListWidgetModelProvider.read(context)!.model;
-    task = model?.getTaskFromHive(widget.taskIndex);
-
-    // isTaskDone = task?.isDone ?? false;
-
-    // final taskColor =
-    //     isTaskDone ? AppColors.mainGreenDark : AppColors.secondaryDark;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // final model = TasksListWidgetModelProvider.read(context)!.model;
+    final model = TasksListWidgetModelProvider.read(context)!.model;
+    final task = model.getTaskFromHive(taskIndex);
 
-    // final task = model.getTaskFromHive(taskIndex);
+    final isTaskDone = task?.isDone ?? false;
 
-    // final isTaskDone = task?.isDone ?? false;
-
-    // final taskColor =
-    //     isTaskDone ? AppColors.mainGreenDark : AppColors.secondaryDark;
-
-    // ----------------------------------
-
-    // final task = model.getTaskFromHive(widget.taskIndex);
+    final taskColor =
+        isTaskDone ? AppColors.mainGreenDark : AppColors.secondaryDark;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: FutureBuilder<Task?>(
-        future: task,
-        builder: (BuildContext context, AsyncSnapshot<Task?> snapshot) {
-          if (snapshot.hasData) {
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: snapshot.data?.isDone ?? false
-                    ? AppColors.mainGreenDark
-                    : AppColors.secondaryDark,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: taskColor,
+        ),
+        child: task == null
+            ? const Center(child: CircularProgressIndicator())
+            : _TaskInfoWidget(
+                model: model,
+                task: task,
               ),
-              child: snapshot.data == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : model == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : _TaskInfoWidget(model: model!, task: snapshot.data!),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
       ),
     );
   }
@@ -100,9 +63,8 @@ class _TaskInfoWidget extends StatelessWidget {
         ? Icons.keyboard_double_arrow_right_rounded
         : Icons.keyboard_double_arrow_left_rounded;
 
-    void handleSlidableActionMoveTap(BuildContext context) => isTodayTask
-        ? model.moveTaskFromTodayToTomorrowOrViceVersa(task, isTodayTask)
-        : model.moveTaskFromTodayToTomorrowOrViceVersa(task, isTodayTask);
+    void handleSlidableActionMoveTap(BuildContext context) =>
+        model.moveTaskFromTodayToTomorrowOrViceVersa(task);
     void handleSlidableActionDeleteTap(BuildContext context) =>
         model.deleteTask(task);
 
