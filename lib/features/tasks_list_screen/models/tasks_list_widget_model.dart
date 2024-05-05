@@ -33,6 +33,10 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     _listenableBox = _box.listenable();
     _listenableBox?.addListener(_getTasksNumberFromHive);
+
+    if (boxName == HiveKeys.todayTasksBox) {
+      await _moveOldTasksToOtherWhenNewDay();
+    }
   }
 
   @override
@@ -46,6 +50,26 @@ class TasksListWidgetModel extends ChangeNotifier {
     });
 
     super.dispose();
+  }
+
+  Future<void> _moveOldTasksToOtherWhenNewDay() async {
+    DateTime now = DateTime.now();
+    DateTime todayDate = DateTime(now.year, now.month, now.day);
+
+    final tasksToMove =
+        _box.values.where((task) => task.dateTime.compareTo(todayDate) != 0);
+
+    if (tasksToMove.isEmpty) return;
+
+    const toBoxName = HiveKeys.otherTasksBox;
+    final toBox = await HiveBoxManager.instance.openTaskBox(toBoxName);
+
+    for (final task in tasksToMove) {
+      await task.delete();
+      await toBox.add(task);
+    }
+
+    await HiveBoxManager.instance.closeTaskBox(toBoxName);
   }
 
   void _getTasksNumberFromHive() {
