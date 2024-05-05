@@ -17,7 +17,6 @@ class TasksListWidgetModel extends ChangeNotifier {
 
   TasksListWidgetModel({required this.boxName}) {
     GetIt.I<Talker>().debug('TasksListWidgetModel init');
-    // _setup();
   }
 
   Future<int> setupModel() async {
@@ -32,23 +31,11 @@ class TasksListWidgetModel extends ChangeNotifier {
     return 0;
   }
 
-  // Future<void> _setup() async {
-  //   GetIt.I<Talker>().debug('TasksListWidgetModel _setup');
-
-  //   final box = await HiveBoxManager.instance.openTaskBox(boxName);
-  //   await _getTasksNumberFromHive();
-
-  //   _listenableBox = box.listenable();
-  //   _listenableBox?.addListener(_getTasksNumberFromHive);
-  // }
-
   @override
   Future<void> dispose() async {
     GetIt.I<Talker>().debug('TasksListWidgetModel dispose');
 
     _listenableBox?.removeListener(_getTasksNumberFromHive);
-
-    // await HiveBoxManager.instance.closeTaskBox(boxName);
 
     Future.delayed(Duration.zero, () async {
       await HiveBoxManager.instance.closeTaskBox(boxName);

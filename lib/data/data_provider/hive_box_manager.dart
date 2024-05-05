@@ -40,21 +40,4 @@ class HiveBoxManager {
     await box.compact();
     await box.close();
   }
-
-  // Future<void> closeBox<T>(Box<T> box) async {
-  //   if (!box.isOpen) {
-  //     _boxCounter.remove(box.name);
-  //     return;
-  //   }
-
-  //   var counter = _boxCounter[box.name] ?? 1;
-  //   counter -= 1;
-  //   _boxCounter[box.name] = counter;
-  //   if (counter > 0) return;
-
-  //   _boxCounter.remove(box.name);
-
-  //   await box.compact();
-  //   await box.close();
-  // }
 }

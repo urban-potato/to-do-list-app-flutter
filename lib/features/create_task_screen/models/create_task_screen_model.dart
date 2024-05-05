@@ -8,11 +8,12 @@ class CreateTaskScreenModel {
   var taskName = '';
   var taskDetails = '';
 
-  void saveTask(BuildContext context) async {
+  Future<void> saveTask(BuildContext context) async {
     if (taskName.isEmpty) return;
 
-    final box =
-        await HiveBoxManager.instance.openTaskBox(HiveKeys.todayTasksBox);
+    const boxName = HiveKeys.todayTasksBox;
+
+    final box = await HiveBoxManager.instance.openTaskBox(boxName);
 
     DateTime now = DateTime.now();
     final task = Task(
@@ -22,7 +23,7 @@ class CreateTaskScreenModel {
     );
 
     await box.add(task);
-    await HiveBoxManager.instance.closeTaskBox(HiveKeys.todayTasksBox);
+    await HiveBoxManager.instance.closeTaskBox(boxName);
 
     if (context.mounted) AutoRouter.of(context).maybePop();
   }

@@ -4,8 +4,8 @@ import 'package:to_do_list_app/data/entity/task.dart';
 class TaskScreenModel extends ChangeNotifier {
   Task task;
 
-  late String taskName;
-  late String taskDetails;
+  var taskName = '';
+  var taskDetails = '';
 
   TaskScreenModel({required this.task}) {
     _setup();
