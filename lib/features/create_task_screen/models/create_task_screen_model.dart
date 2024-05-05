@@ -22,6 +22,7 @@ class CreateTaskScreenModel {
     );
 
     await box.add(task);
+    await HiveBoxManager.instance.closeTaskBox(HiveKeys.todayTasksBox);
 
     if (context.mounted) AutoRouter.of(context).maybePop();
   }

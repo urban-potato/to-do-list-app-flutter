@@ -8,15 +8,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class TaskScreen extends StatefulWidget {
-  const TaskScreen(
-      {super.key,
-      required this.task,
-      required this.taskIndex,
-      required this.boxName});
+  const TaskScreen({super.key, required this.task});
 
   final Task task;
-  final int taskIndex;
-  final String boxName;
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
@@ -28,10 +22,7 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _model ??= TaskScreenModel(
-        task: widget.task,
-        taskIndex: widget.taskIndex,
-        boxName: widget.boxName);
+    _model ??= TaskScreenModel(task: widget.task);
   }
 
   @override

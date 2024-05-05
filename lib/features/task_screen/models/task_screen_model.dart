@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
 
 class TaskScreenModel extends ChangeNotifier {
   Task task;
-  final int taskIndex;
-  final String boxName;
 
   late String taskName;
   late String taskDetails;
 
-  TaskScreenModel({
-    required this.task,
-    required this.taskIndex,
-    required this.boxName,
-  }) {
+  TaskScreenModel({required this.task}) {
     _setup();
   }
 
-  Future<void> _setup() async {
+  void _setup() {
     taskName = task.name;
     taskDetails = task.details;
 
@@ -32,9 +25,7 @@ class TaskScreenModel extends ChangeNotifier {
     task.name = taskName;
     task.details = taskDetails;
 
-    final box = await HiveBoxManager.instance.openTaskBox(boxName);
-
-    await box.putAt(taskIndex, task);
+    await task.save();
   }
 }
 

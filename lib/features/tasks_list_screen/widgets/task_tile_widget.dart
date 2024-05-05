@@ -7,33 +7,71 @@ import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widg
 import 'package:to_do_list_app/router/router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TaskTileWidget extends StatelessWidget {
+class TaskTileWidget extends StatefulWidget {
   const TaskTileWidget({super.key, required this.taskIndex});
 
   final int taskIndex;
 
   @override
+  State<TaskTileWidget> createState() => _TaskTileWidgetState();
+}
+
+class _TaskTileWidgetState extends State<TaskTileWidget> {
+  Future<Task?>? task;
+  TasksListWidgetModel? model;
+  // bool? isTaskDone;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    model = TasksListWidgetModelProvider.read(context)!.model;
+    task = model?.getTaskFromHive(widget.taskIndex);
+
+    // isTaskDone = task?.isDone ?? false;
+
+    // final taskColor =
+    //     isTaskDone ? AppColors.mainGreenDark : AppColors.secondaryDark;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final model = TasksListWidgetModelProvider.read(context)!.model;
-    final task = model.tasksList?[taskIndex];
-    final taskColor = task?.isDone ?? false
-        ? AppColors.mainGreenDark
-        : AppColors.secondaryDark;
+    // final model = TasksListWidgetModelProvider.read(context)!.model;
+
+    // final task = model.getTaskFromHive(taskIndex);
+
+    // final isTaskDone = task?.isDone ?? false;
+
+    // final taskColor =
+    //     isTaskDone ? AppColors.mainGreenDark : AppColors.secondaryDark;
+
+    // ----------------------------------
+
+    // final task = model.getTaskFromHive(widget.taskIndex);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: taskColor,
-        ),
-        child: task == null
-            ? const Center(child: CircularProgressIndicator())
-            : _TaskInfoWidget(
-                model: model,
-                taskIndex: taskIndex,
-                task: task,
+      child: FutureBuilder<Task?>(
+        future: task,
+        builder: (BuildContext context, AsyncSnapshot<Task?> snapshot) {
+          if (snapshot.hasData) {
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: snapshot.data?.isDone ?? false
+                    ? AppColors.mainGreenDark
+                    : AppColors.secondaryDark,
               ),
+              child: snapshot.data == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : model == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : _TaskInfoWidget(model: model!, task: snapshot.data!),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
@@ -42,12 +80,10 @@ class TaskTileWidget extends StatelessWidget {
 class _TaskInfoWidget extends StatelessWidget {
   const _TaskInfoWidget({
     required this.model,
-    required this.taskIndex,
     required this.task,
   });
 
   final TasksListWidgetModel model;
-  final int taskIndex;
   final Task task;
 
   @override
@@ -65,10 +101,10 @@ class _TaskInfoWidget extends StatelessWidget {
         : Icons.keyboard_double_arrow_left_rounded;
 
     void handleSlidableActionMoveTap(BuildContext context) => isTodayTask
-        ? model.moveTaskFromTodayToTomorrowOrViceVersa(taskIndex, isTodayTask)
-        : model.moveTaskFromTodayToTomorrowOrViceVersa(taskIndex, isTodayTask);
+        ? model.moveTaskFromTodayToTomorrowOrViceVersa(task, isTodayTask)
+        : model.moveTaskFromTodayToTomorrowOrViceVersa(task, isTodayTask);
     void handleSlidableActionDeleteTap(BuildContext context) =>
-        model.deleteTask(taskIndex);
+        model.deleteTask(task);
 
     final SlidableAction slidableActionMove = SlidableAction(
       onPressed: handleSlidableActionMoveTap,
@@ -88,14 +124,16 @@ class _TaskInfoWidget extends StatelessWidget {
       padding: EdgeInsets.zero,
     );
 
-    final List<SlidableAction> slidableActions = task.isDone
+    final isTaskDone = task.isDone;
+
+    final List<SlidableAction> slidableActions = isTaskDone
         ? [slidableActionDelete]
         : [slidableActionMove, slidableActionDelete];
 
-    final double slidableExtentRatio = task.isDone ? 0.24 : 0.45;
+    final double slidableExtentRatio = isTaskDone ? 0.24 : 0.45;
 
     final splashColor =
-        task.isDone ? AppColors.splashGreen : AppColors.splashGray;
+        isTaskDone ? AppColors.splashGreen : AppColors.splashGray;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
@@ -113,16 +151,11 @@ class _TaskInfoWidget extends StatelessWidget {
             splashColor: splashColor,
             highlightColor: splashColor,
             onTap: () {
-              AutoRouter.of(context).push(TaskRoute(
-                task: task,
-                taskIndex: taskIndex,
-                boxName: model.boxName,
-              ));
+              AutoRouter.of(context).push(TaskRoute(task: task));
             },
             child: ListTile(
               leading: _CheckBoxWidget(
-                taskIndex: taskIndex,
-                isDone: task.isDone,
+                task: task,
                 model: model,
               ),
               title: Text(
@@ -143,37 +176,37 @@ class _TaskInfoWidget extends StatelessWidget {
 
 class _CheckBoxWidget extends StatelessWidget {
   const _CheckBoxWidget({
-    required this.taskIndex,
-    required this.isDone,
+    required this.task,
     required this.model,
   });
 
-  final int taskIndex;
-  final bool isDone;
+  final Task task;
   final TasksListWidgetModel model;
 
   @override
   Widget build(BuildContext context) {
-    final checkBoxColor = isDone ? AppColors.thirdDark : Colors.transparent;
+    final isTaskDone = task.isDone;
+    final checkBoxColor = isTaskDone ? AppColors.thirdDark : Colors.transparent;
     final splashColor =
-        isDone ? AppColors.splashSuperLightGray : AppColors.splashLightGray;
+        isTaskDone ? AppColors.splashSuperLightGray : AppColors.splashLightGray;
 
     return SizedBox(
       height: 24,
       width: 24,
       child: DecoratedBox(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(9999),
-            color: checkBoxColor,
-            border: Border.all(color: AppColors.thirdDark, width: 2.5)),
+          borderRadius: BorderRadius.circular(9999),
+          color: checkBoxColor,
+          border: Border.all(color: AppColors.thirdDark, width: 2.5),
+        ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
               borderRadius: BorderRadius.circular(9999),
               splashColor: splashColor,
               highlightColor: splashColor,
-              onTap: () => model.completeOrUncompleteTask(taskIndex),
-              child: isDone
+              onTap: () => model.completeOrUncompleteTask(task),
+              child: isTaskDone
                   ? Icon(Icons.done, color: AppColors.mainGreenDark)
                   : null),
         ),

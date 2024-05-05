@@ -11,9 +11,8 @@ part 'router.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(
-            page: TasksListRoute.page, path: '/tasks_list', initial: true),
-        AutoRoute(page: CreateTaskRoute.page, path: '/tasks_list/create'),
-        AutoRoute(page: TaskRoute.page, path: '/task'),
+        AutoRoute(page: TasksListRoute.page, path: '/tasks', initial: true),
+        AutoRoute(page: CreateTaskRoute.page, path: '/tasks/create'),
+        AutoRoute(page: TaskRoute.page, path: '/tasks/task'),
       ];
 }
