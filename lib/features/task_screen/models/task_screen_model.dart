@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -31,25 +32,51 @@ class TaskScreenModel extends ChangeNotifier {
 
   Future<void> saveTask(BuildContext context) async {
     final taskName = _taskName.trim();
+    if (taskName == task.name && taskDetails == task.details) return;
+
+    final boxBase = task.box;
+    if (boxBase == null) return;
+
+    final isBoxOpen = boxBase.isOpen;
 
     if (taskName.isEmpty) {
       if (taskDetails != task.details) {
         task.details = taskDetails;
+
+        await _openBoxIfClosed(isBoxOpen, boxBase.name);
         await task.save();
+        await _closeBoxIfWasOpenedManually(isBoxOpen, boxBase.name);
+
         return;
       }
 
-      errorMessage = AppLocalizations.of(context)!.enterTask;
-      notifyListeners();
+      if (context.mounted) {
+        errorMessage = AppLocalizations.of(context)!.enterTask;
+        notifyListeners();
+      }
+
       return;
     }
-
-    if (taskName == task.name && taskDetails == task.details) return;
 
     task.name = taskName;
     task.details = taskDetails;
 
+    await _openBoxIfClosed(isBoxOpen, boxBase.name);
     await task.save();
+    await _closeBoxIfWasOpenedManually(isBoxOpen, boxBase.name);
+  }
+
+  Future<void> _openBoxIfClosed(bool isBoxOpen, String boxName) async {
+    if (!isBoxOpen) {
+      await HiveBoxManager.instance.openTaskBox(boxName);
+    }
+  }
+
+  Future<void> _closeBoxIfWasOpenedManually(
+      bool wasBoxOpen, String boxName) async {
+    if (!wasBoxOpen) {
+      await HiveBoxManager.instance.closeTaskBox(boxName);
+    }
   }
 }
 
