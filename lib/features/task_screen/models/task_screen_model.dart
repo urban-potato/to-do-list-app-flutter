@@ -1,25 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreenModel extends ChangeNotifier {
   Task task;
 
-  var taskName = '';
+  var _taskName = '';
   var taskDetails = '';
+  String? errorMessage;
+
+  set taskName(String value) {
+    if (errorMessage != null && value.trim().isNotEmpty) {
+      errorMessage = null;
+      notifyListeners();
+    }
+
+    _taskName = value;
+  }
 
   TaskScreenModel({required this.task}) {
     _setup();
   }
 
   void _setup() {
-    taskName = task.name;
+    _taskName = task.name;
     taskDetails = task.details;
 
     notifyListeners();
   }
 
-  Future<void> saveTask() async {
-    if (taskName.isEmpty) return;
+  Future<void> saveTask(BuildContext context) async {
+    final taskName = _taskName.trim();
+
+    if (taskName.isEmpty) {
+      if (taskDetails != task.details) {
+        task.details = taskDetails;
+        await task.save();
+        return;
+      }
+
+      errorMessage = AppLocalizations.of(context)!.enterTask;
+      notifyListeners();
+      return;
+    }
+
     if (taskName == task.name && taskDetails == task.details) return;
 
     task.name = taskName;

@@ -44,7 +44,7 @@ class _TaskScreenBody extends StatelessWidget {
 
     return PopScope(
       onPopInvoked: (bool didPop) {
-        TaskScreenModelProvider.read(context)?.model.saveTask();
+        TaskScreenModelProvider.read(context)?.model.saveTask(context);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -110,12 +110,15 @@ class _TaskNameWidgetState extends State<_TaskNameWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final model = TaskScreenModelProvider.watch(context)?.model;
+
     return TextField(
       controller: taskNameController,
       decoration: _TextFieldDecoration.decoration.copyWith(
         hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         counterText: '',
+        errorText: model?.errorMessage,
       ),
       style: Theme.of(context)
           .textTheme
@@ -123,13 +126,13 @@ class _TaskNameWidgetState extends State<_TaskNameWidget> {
           ?.copyWith(fontSize: 18, fontWeight: FontWeight.w700),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
+      textInputAction: TextInputAction.newline,
       minLines: null,
       maxLines: null,
       maxLength: 256,
-      textInputAction: TextInputAction.newline,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
-        TaskScreenModelProvider.read(context)?.model.saveTask();
+        TaskScreenModelProvider.read(context)?.model.saveTask(context);
       },
       onChanged: (String value) =>
           TaskScreenModelProvider.read(context)?.model.taskName = value,
@@ -171,11 +174,12 @@ class _TaskDetailsWidgetState extends State<_TaskDetailsWidget> {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
+      textInputAction: TextInputAction.newline,
       minLines: null,
       maxLines: null,
       onTapOutside: (PointerDownEvent event) {
         FocusManager.instance.primaryFocus?.unfocus();
-        TaskScreenModelProvider.read(context)?.model.saveTask();
+        TaskScreenModelProvider.read(context)?.model.saveTask(context);
       },
       onChanged: (String value) =>
           TaskScreenModelProvider.read(context)?.model.taskDetails = value,
@@ -189,6 +193,8 @@ abstract class _TextFieldDecoration {
   static const decoration = InputDecoration(
     enabledBorder: InputBorder.none,
     focusedBorder: InputBorder.none,
+    errorBorder: InputBorder.none,
+    focusedErrorBorder: InputBorder.none,
     contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
     isCollapsed: true,
   );

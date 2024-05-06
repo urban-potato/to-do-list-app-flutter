@@ -72,12 +72,15 @@ class _TaskNameFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = CreateTaskScreenModelProvider.watch(context)?.model;
+
     return TextField(
       autofocus: true,
       decoration: _TextFieldDecoration.decoration.copyWith(
         hintText: AppLocalizations.of(context)!.taskNamePlaceholder,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         counterText: '',
+        errorText: model?.errorMessage,
       ),
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
@@ -111,7 +114,7 @@ class _TaskDetailsFieldWidget extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.dark,
-      // textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.newline,
       minLines: null,
       maxLines: null,
       onTapOutside: (PointerDownEvent event) {
@@ -165,6 +168,8 @@ abstract class _TextFieldDecoration {
   static const decoration = InputDecoration(
     enabledBorder: InputBorder.none,
     focusedBorder: InputBorder.none,
+    errorBorder: InputBorder.none,
+    focusedErrorBorder: InputBorder.none,
     contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
     isCollapsed: true,
   );

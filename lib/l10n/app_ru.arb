@@ -16,5 +16,6 @@
   "personMeditate": "Человек медитирует в офисе",
   "personTasks": "Человек отмечает выполнение задач в списке задач",
   "tomorrow": "Завтра",
-  "changeLanguage": "Изменить язык"
+  "changeLanguage": "Изменить язык",
+  "enterTask": "Укажите задачу"
 }

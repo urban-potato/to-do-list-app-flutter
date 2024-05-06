@@ -3,13 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CreateTaskScreenModel {
-  var taskName = '';
+class CreateTaskScreenModel extends ChangeNotifier {
+  var _taskName = '';
   var taskDetails = '';
+  String? errorMessage;
+
+  set taskName(String value) {
+    if (errorMessage != null && value.trim().isNotEmpty) {
+      errorMessage = null;
+      notifyListeners();
+    }
+    _taskName = value;
+  }
 
   Future<void> saveTask(BuildContext context) async {
-    if (taskName.isEmpty) return;
+    final taskName = _taskName.trim();
+
+    if (taskName.isEmpty) {
+      errorMessage = AppLocalizations.of(context)!.enterTask;
+      notifyListeners();
+      return;
+    }
 
     const boxName = HiveKeys.todayTasksBox;
 
@@ -29,12 +45,12 @@ class CreateTaskScreenModel {
   }
 }
 
-class CreateTaskScreenModelProvider extends InheritedWidget {
+class CreateTaskScreenModelProvider extends InheritedNotifier {
   const CreateTaskScreenModelProvider({
     super.key,
     required super.child,
     required this.model,
-  });
+  }) : super(notifier: model);
 
   final CreateTaskScreenModel model;
 
@@ -49,10 +65,5 @@ class CreateTaskScreenModelProvider extends InheritedWidget {
             CreateTaskScreenModelProvider>()
         ?.widget;
     return widget is CreateTaskScreenModelProvider ? widget : null;
-  }
-
-  @override
-  bool updateShouldNotify(CreateTaskScreenModelProvider oldWidget) {
-    return false;
   }
 }
