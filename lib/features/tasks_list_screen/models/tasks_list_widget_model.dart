@@ -69,7 +69,10 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   Task? getTaskFromHive(int taskIndex) {
+    if (!_box.isOpen) return null;
+
     final task = _box.getAt(taskIndex);
+
     return task;
   }
 
