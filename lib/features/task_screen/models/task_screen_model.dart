@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
-import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:to_do_list_app/data/data_providers/hive_box_manager.dart';
+import 'package:to_do_list_app/data/entities/task.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskScreenModel extends ChangeNotifier {

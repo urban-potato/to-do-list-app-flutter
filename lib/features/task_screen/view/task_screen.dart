@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:to_do_list_app/constants/constants.dart';
-import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:to_do_list_app/data/entities/task.dart';
 import 'package:to_do_list_app/features/task_screen/models/task_screen_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

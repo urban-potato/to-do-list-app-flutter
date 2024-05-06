@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
-import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:to_do_list_app/data/data_providers/hive_box_manager.dart';
+import 'package:to_do_list_app/data/entities/task.dart';
 
 class TasksListWidgetModel extends ChangeNotifier {
   final String boxName;

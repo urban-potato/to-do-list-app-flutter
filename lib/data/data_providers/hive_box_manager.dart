@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:talker_flutter/talker_flutter.dart';
-import 'package:to_do_list_app/data/entity/task.dart';
+import 'package:to_do_list_app/data/entities/task.dart';
 
 class HiveBoxManager {
   static final HiveBoxManager instance = HiveBoxManager._();
