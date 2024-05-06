@@ -40,19 +40,17 @@ class TaskScreenModel extends ChangeNotifier {
     final isBoxOpen = boxBase.isOpen;
 
     if (taskName.isEmpty) {
+      if (context.mounted) {
+        errorMessage = AppLocalizations.of(context)!.enterTask;
+        notifyListeners();
+      }
+
       if (taskDetails != task.details) {
         task.details = taskDetails;
 
         await _openBoxIfClosed(isBoxOpen, boxBase.name);
         await task.save();
         await _closeBoxIfWasOpenedManually(isBoxOpen, boxBase.name);
-
-        return;
-      }
-
-      if (context.mounted) {
-        errorMessage = AppLocalizations.of(context)!.enterTask;
-        notifyListeners();
       }
 
       return;
