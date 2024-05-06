@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_it/get_it.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/tasks_list_widget_model.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/task_tile_widget.dart';
@@ -30,9 +28,6 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
   @override
   void initState() {
-    GetIt.I<Talker>()
-        .debug('(${widget.boxName}) ----- TasksListWidget initState -----');
-
     super.initState();
 
     _model = TasksListWidgetModel.create(widget.boxName);
@@ -40,9 +35,6 @@ class _TasksListWidgetState extends State<TasksListWidget> {
 
   @override
   Future<void> dispose() async {
-    GetIt.I<Talker>()
-        .debug('(${widget.boxName}) ----- TasksListWidget dispose -----');
-
     Future.delayed(Duration.zero, () async {
       await (await _model)?.dispose();
     });

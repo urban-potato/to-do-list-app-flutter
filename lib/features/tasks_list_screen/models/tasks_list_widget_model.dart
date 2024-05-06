@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
@@ -15,9 +13,7 @@ class TasksListWidgetModel extends ChangeNotifier {
   int _tasksListLength = 0;
   int get tasksListLength => _tasksListLength;
 
-  TasksListWidgetModel._create({required this.boxName}) {
-    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel init');
-  }
+  TasksListWidgetModel._create({required this.boxName});
 
   static Future<TasksListWidgetModel> create(String boxName) async {
     final component = TasksListWidgetModel._create(boxName: boxName);
@@ -26,8 +22,6 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   Future<void> _setup() async {
-    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel _setup');
-
     _box = await HiveBoxManager.instance.openTaskBox(boxName);
     _getTasksNumberFromHive();
 
@@ -41,8 +35,6 @@ class TasksListWidgetModel extends ChangeNotifier {
 
   @override
   Future<void> dispose() async {
-    GetIt.I<Talker>().debug('($boxName) TasksListWidgetModel dispose');
-
     _listenableBox?.removeListener(_getTasksNumberFromHive);
 
     Future.delayed(Duration.zero, () async {

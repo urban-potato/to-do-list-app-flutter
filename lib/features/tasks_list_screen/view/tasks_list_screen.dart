@@ -2,9 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/language.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/tasks_list_widget.dart';
@@ -134,14 +132,6 @@ class _TasksListScreenState extends State<TasksListScreen> {
   }
 
   void _handleFloatingButtonTap(BuildContext context) {
-    final isTodayTasksBoxOpen = Hive.isBoxOpen(HiveKeys.todayTasksBox);
-    final isOtherTasksBoxOpen = Hive.isBoxOpen(HiveKeys.otherTasksBox);
-    final isDoneTasksBoxOpen = Hive.isBoxOpen(HiveKeys.doneTasksBox);
-
-    GetIt.I<Talker>().debug('+++++ TodayTasksBoxOpen = $isTodayTasksBoxOpen');
-    GetIt.I<Talker>().debug('+++++ OtherTasksBoxOpen = $isOtherTasksBoxOpen');
-    GetIt.I<Talker>().debug('+++++ DoneTasksBoxOpen = $isDoneTasksBoxOpen');
-
     AutoRouter.of(context).push(const CreateTaskRoute());
   }
 
