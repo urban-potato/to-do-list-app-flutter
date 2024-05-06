@@ -131,9 +131,12 @@ class _TasksListBuilderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: tasksListLength,
-      itemBuilder: (context, index) => TaskTileWidget(taskIndex: index),
-    );
+    return tasksListLength > 0
+        ? ListView.builder(
+            itemCount: tasksListLength,
+            itemBuilder: (context, index) =>
+                TaskTileWidget(taskIndex: tasksListLength - 1 - index),
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }
