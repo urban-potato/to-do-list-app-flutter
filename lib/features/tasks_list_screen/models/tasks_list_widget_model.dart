@@ -44,6 +44,8 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   Future<void> _moveOldTasksToOtherWhenNewDay() async {
+    if (!_box.isOpen) return;
+
     DateTime now = DateTime.now();
     DateTime todayDate = DateTime(now.year, now.month, now.day);
 
@@ -64,6 +66,8 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   void _getTasksNumberFromHive() {
+    if (!_box.isOpen) return;
+
     _tasksListLength = _box.length;
     notifyListeners();
   }
@@ -77,10 +81,14 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   Future<void> deleteTask(Task task) async {
+    if (!_box.isOpen) return;
+
     await task.delete();
   }
 
   Future<void> moveTaskFromTodayToTomorrowOrViceVersa(Task task) async {
+    if (!_box.isOpen) return;
+
     String toBoxName;
 
     if (boxName == HiveBoxManager.instance.keys.todayTasksBox) {
@@ -109,6 +117,8 @@ class TasksListWidgetModel extends ChangeNotifier {
   }
 
   Future<void> completeOrUncompleteTask(Task task) async {
+    if (!_box.isOpen) return;
+
     String toBoxName;
 
     await task.delete();
