@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_list_app/constants/constants.dart';
+import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/models/language.dart';
 import 'package:to_do_list_app/features/tasks_list_screen/widgets/tasks_list_widget.dart';
 import 'package:to_do_list_app/resources/resources.dart';
@@ -52,22 +53,22 @@ class _TasksListScreenState extends State<TasksListScreen> {
   void _updateData(BuildContext context) {
     _widgets = [
       TasksListWidget(
-        key: const Key(HiveKeys.todayTasksBox),
-        boxName: HiveKeys.todayTasksBox,
+        key: Key(HiveBoxManager.instance.keys.todayTasksBox),
+        boxName: HiveBoxManager.instance.keys.todayTasksBox,
         svgPicture: Svgs.personComputer,
         svgSemanticsLabel: AppLocalizations.of(context)!.personComputer,
         textUnderPicture: AppLocalizations.of(context)!.noTasksToday,
       ),
       TasksListWidget(
-        key: const Key(HiveKeys.otherTasksBox),
-        boxName: HiveKeys.otherTasksBox,
+        key: Key(HiveBoxManager.instance.keys.otherTasksBox),
+        boxName: HiveBoxManager.instance.keys.otherTasksBox,
         svgPicture: Svgs.personMeditate,
         svgSemanticsLabel: AppLocalizations.of(context)!.personMeditate,
         textUnderPicture: AppLocalizations.of(context)!.noTasksOtherDays,
       ),
       TasksListWidget(
-        key: const Key(HiveKeys.doneTasksBox),
-        boxName: HiveKeys.doneTasksBox,
+        key: Key(HiveBoxManager.instance.keys.doneTasksBox),
+        boxName: HiveBoxManager.instance.keys.doneTasksBox,
         svgPicture: Svgs.personTasks,
         svgSemanticsLabel: AppLocalizations.of(context)!.personTasks,
         textUnderPicture: AppLocalizations.of(context)!.noTasksDone,

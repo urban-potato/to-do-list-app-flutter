@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_app/constants/constants.dart';
 import 'package:to_do_list_app/data/data_provider/hive_box_manager.dart';
 import 'package:to_do_list_app/data/entity/task.dart';
 
@@ -28,7 +27,7 @@ class TasksListWidgetModel extends ChangeNotifier {
     _listenableBox = _box.listenable();
     _listenableBox?.addListener(_getTasksNumberFromHive);
 
-    if (boxName == HiveKeys.todayTasksBox) {
+    if (boxName == HiveBoxManager.instance.keys.todayTasksBox) {
       await _moveOldTasksToOtherWhenNewDay();
     }
   }
@@ -53,7 +52,7 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     if (tasksToMove.isEmpty) return;
 
-    const toBoxName = HiveKeys.otherTasksBox;
+    final toBoxName = HiveBoxManager.instance.keys.otherTasksBox;
     final toBox = await HiveBoxManager.instance.openTaskBox(toBoxName);
 
     for (final task in tasksToMove) {
@@ -81,15 +80,15 @@ class TasksListWidgetModel extends ChangeNotifier {
   Future<void> moveTaskFromTodayToTomorrowOrViceVersa(Task task) async {
     String toBoxName;
 
-    if (boxName == HiveKeys.todayTasksBox) {
-      toBoxName = HiveKeys.otherTasksBox;
+    if (boxName == HiveBoxManager.instance.keys.todayTasksBox) {
+      toBoxName = HiveBoxManager.instance.keys.otherTasksBox;
     } else {
-      toBoxName = HiveKeys.todayTasksBox;
+      toBoxName = HiveBoxManager.instance.keys.todayTasksBox;
     }
 
     DateTime newTaskDateTime;
 
-    if (boxName == HiveKeys.todayTasksBox) {
+    if (boxName == HiveBoxManager.instance.keys.todayTasksBox) {
       newTaskDateTime = DateTime(
           task.dateTime.year, task.dateTime.month, task.dateTime.day + 1);
     } else {
@@ -111,16 +110,16 @@ class TasksListWidgetModel extends ChangeNotifier {
 
     await task.delete();
 
-    if (boxName != HiveKeys.doneTasksBox) {
+    if (boxName != HiveBoxManager.instance.keys.doneTasksBox) {
       task.isDone = true;
-      toBoxName = HiveKeys.doneTasksBox;
+      toBoxName = HiveBoxManager.instance.keys.doneTasksBox;
     } else {
       final now = DateTime.now();
       final todayDateTime = DateTime(now.year, now.month, now.day);
 
       task.isDone = false;
       task.dateTime = todayDateTime;
-      toBoxName = HiveKeys.todayTasksBox;
+      toBoxName = HiveBoxManager.instance.keys.todayTasksBox;
     }
 
     final toBox = await HiveBoxManager.instance.openTaskBox(toBoxName);
